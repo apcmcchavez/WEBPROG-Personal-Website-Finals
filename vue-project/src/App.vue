@@ -1,5 +1,10 @@
 <template>
   <div>
+    <!-- Hobbies & Interests Section -->
+    <section id="hobbies-section">
+      <Hobbies />
+    </section>
+
     <!-- Gallery Section -->
     <section id="gallery-section">
       <Gallery @scroll-to-feedback="scrollToFeedback" />
@@ -13,8 +18,9 @@
 </template>
 
 <script setup>
-import FeedbackForm from './components/FeedbackForm.vue'
-import Gallery from './components/Gallery.vue'
+import FeedbackForm from './components/FeedbackForm.vue';
+import Gallery from './components/Gallery.vue';
+import Hobbies from './components/Hobbies.vue';
 
 const scrollToFeedback = () => {
   const feedbackSection = document.querySelector("#feedback-section");
@@ -39,6 +45,4 @@ html, body {
   height: 100%;
   background-color: black; /* Ensure full background coverage */
 }
-
-
 </style>
