@@ -27,23 +27,23 @@ const toggleFlip = (index) => {
 };
 
 const images = [
-    { src: '/src/assets/images/gallery/Me Painting.png', width: 312.30, height: 324, text: 'Me Painting' },
-    { src: '/src/assets/images/gallery/With my Girl Besties.png', width: 497.80, height: 324, text: 'With my Girlie Besties' },
-    { src: '/src/assets/images/gallery/Me and my Siblings.png', width: 225.45, height: 324, text: 'Baguio with my Siblings' },
-    { src: '/src/assets/images/gallery/art exhibit.png', width: 496.38, height: 324, text: 'Organized my first event in College' },
-    { src: '/src/assets/images/gallery/bestiedate.png', width: 218.38, height: 324, text: 'Date with the Girls' },
+    { src: '/images/gallery/Me Painting.png', width: 312.30, height: 324, text: 'Me Painting' },
+    { src: '/images/gallery/With my Girl Besties.png', width: 497.80, height: 324, text: 'With my Girlie Besties' },
+    { src: '/images/gallery/Me and my Siblings.png', width: 225.45, height: 324, text: 'Baguio with my Siblings' },
+    { src: '/images/gallery/art exhibit.png', width: 496.38, height: 324, text: 'Organized my first event in College' },
+    { src: '/images/gallery/bestiedate.png', width: 218.38, height: 324, text: 'Date with the Girls' },
 
-    { src: '/src/assets/images/gallery/choco.jpg', width: 279.31, height: 397.68, text: 'Choco Doggo' },
-    { src: '/src/assets/images/gallery/lloyd1.jpg', width: 279.31, height: 397.68, text: 'Masked Lloydie' },
-    { src: '/src/assets/images/gallery/ashy.jpg', width: 435.76, height: 397.68, text: 'Ashy Catto' },
-    { src: '/src/assets/images/gallery/parents.png', width: 305.81, height: 397.68, text: 'Mah Parents' },
-    { src: '/src/assets/images/gallery/frosty.jpg', width: 450.12, height: 397.68, text: 'Frosty Catto' },
+    { src: '/images/gallery/choco.jpg', width: 279.31, height: 397.68, text: 'Choco Doggo' },
+    { src: '/images/gallery/lloyd1.jpg', width: 279.31, height: 397.68, text: 'Masked Lloydie' },
+    { src: '/images/gallery/ashy.jpg', width: 435.76, height: 397.68, text: 'Ashy Catto' },
+    { src: '/images/gallery/parents.png', width: 305.81, height: 397.68, text: 'Mah Parents' },
+    { src: '/images/gallery/frosty.jpg', width: 450.12, height: 397.68, text: 'Frosty Catto' },
 
-    { src: '/src/assets/images/gallery/First time baking a cake.jpg', width: 328.30, height: 224.4, text: 'Baked a Cake' },
-    { src: '/src/assets/images/gallery/first year honor list.png', width: 430.62, height: 224.4, text: 'Part of Honor Roll S.Y. 2023-2024' },
-    { src: '/src/assets/images/gallery/devcon.jpg', width: 303.26, height: 224.4, text: 'Attended DEVCON' },
-    { src: '/src/assets/images/gallery/ny2025.jpg', width: 314.11, height: 224.4, text: 'New Year 2025' },
-    { src: '/src/assets/images/gallery/crams.JPG', width: 374.02, height: 224.4, text: 'Crams Intramuros Trip 2024' }
+    { src: '/images/gallery/First time baking a cake.jpg', width: 328.30, height: 224.4, text: 'Baked a Cake' },
+    { src: '/images/gallery/first year honor list.png', width: 430.62, height: 224.4, text: 'Part of Honor Roll S.Y. 2023-2024' },
+    { src: '/images/gallery/devcon.jpg', width: 303.26, height: 224.4, text: 'Attended DEVCON' },
+    { src: '/images/gallery/ny2025.jpg', width: 314.11, height: 224.4, text: 'New Year 2025' },
+    { src: '/images/gallery/crams.JPG', width: 374.02, height: 224.4, text: 'Crams Intramuros Trip 2024' }
 ];
 </script>
 

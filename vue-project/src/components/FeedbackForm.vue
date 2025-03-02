@@ -54,7 +54,6 @@
 </template>
 
 <style scoped>
-
 /* Global Font */
 * {
   font-family: 'Jersey 10', sans-serif;
@@ -65,7 +64,7 @@
 .feedback-page {
   margin: 0;
   min-height: 100vh;
-  background: url('@/assets/images/grid.png') center/cover fixed no-repeat;
+  background: url('/images/grid.png') center/cover fixed no-repeat;
   padding: 20px;
   box-sizing: border-box;
 }
@@ -242,53 +241,38 @@ button:disabled {
   font-weight: bold;
   margin-top: 10px;
 }
-
 </style>
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { supabase } from '../lib/supabaseClient'
 
-const imageUrl = ref(new URL('@/assets/images/feedback.png', import.meta.url).href)
 const name = ref('')
 const section = ref('')
 const message = ref('')
 const loading = ref(false)
 const successMessage = ref('')
 const honorableMentions = ref([])
+const imageUrl = '/images/feedback.png'
 
-// Fetch existing feedback from Supabase
-const fetchHonorableMentions = async () => {
-  const { data, error } = await supabase.from('honorable_mentions').select('*')
-  if (error) {
-    console.error('Error fetching honorable mentions:', error.message)
-  } else {
-    honorableMentions.value = data.reverse()
-  }
-}
-
-// Handle form submission
-const submitFeedback = async () => {
+const submitFeedback = () => {
   loading.value = true
-  successMessage.value = ''
 
-  const newEntry = { name: name.value, section: section.value, message: message.value }
-  const { error } = await supabase.from('honorable_mentions').insert([newEntry])
+  setTimeout(() => {
+    honorableMentions.value.push({
+      name: name.value,
+      section: section.value,
+      message: message.value
+    })
 
-  if (error) {
-    console.error('Error submitting feedback:', error.message)
-    alert('Failed to submit feedback. Please try again.')
-  } else {
-    successMessage.value = 'Feedback submitted successfully!'
-    honorableMentions.value.unshift(newEntry)
+    successMessage.value = 'Thank you for your feedback!'
     name.value = ''
     section.value = ''
     message.value = ''
-  }
-
-  loading.value = false
+    loading.value = false
+  }, 1000)
 }
 
-// Fetch data when component loads
-onMounted(fetchHonorableMentions)
+onMounted(() => {
+  honorableMentions.value = []
+})
 </script>
