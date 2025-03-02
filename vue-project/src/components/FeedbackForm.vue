@@ -1,69 +1,114 @@
 <template>
-  <div class="feedback-container">
-    <div class="feedback-content">
-      <div class="feedback-form">
-        <h2>Hopefully you like this simple webpage of mine ^^</h2>
-        <h2>If you do not mind, I would like to know your name!</h2>
-        <form @submit.prevent="submitFeedback">
-          <label>
-            Name:
-            <input v-model="name" type="text" required />
-          </label>
+  <div class="feedback-page">
+    <div class="feedback-container">
+      <div class="feedback-content">
+        <div class="feedback-form">
+          <h2>Hopefully you like this simple webpage of mine ^^</h2>
+          <h2>If you do not mind, I would like to know your name!</h2>
+          <form @submit.prevent="submitFeedback">
+            <label>
+              Name:
+              <input v-model="name" type="text" required />
+            </label>
 
-          <label>
-            Section:
-            <input v-model="section" type="text" required />
-          </label>
+            <label>
+              Section:
+              <input v-model="section" type="text" required />
+            </label>
 
-          <label>
-            Message (Optional):
-            <textarea v-model="message"></textarea>
-          </label>
+            <label>
+              Message (Optional):
+              <textarea v-model="message"></textarea>
+            </label>
 
-          <button type="submit" :disabled="loading">
-            {{ loading ? "Submitting..." : "Submit" }}
-          </button>
-        </form>
-        <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
+            <button type="submit" :disabled="loading">
+              {{ loading ? "Submitting..." : "Submit" }}
+            </button>
+          </form>
+          <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
+        </div>
+        <div class="feedback-image">
+          <img :src="imageUrl" alt="Feedback Illustration" />
+        </div>
       </div>
-      <div class="feedback-image">
-        <img :src="imageUrl" alt="Feedback Illustration" />
-      </div>
-    </div>
 
-    <h3>Honorable Mentions:</h3>
-    <div class="mentions-container">
-      <div v-for="(mention, index) in honorableMentions" :key="index" class="mention-card">
-        <strong>{{ mention.name }}</strong> ({{ mention.section }})
-        <p v-if="mention.message">{{ mention.message }}</p>
+      <!-- Honorable Mentions Section -->
+      <div class="mentions-container">
+        <div class="mentions-title">Honorable Mentions :0</div>
+        <div class="mentions-subtitle">Thank you for the support!!!</div>
+        
+        <div v-if="honorableMentions.length === 0" class="no-mentions">
+          No mentions yet. Be the first to leave your mark!
+        </div>
+
+        <div v-for="(mention, index) in honorableMentions" :key="index" class="mention-card">
+          <div class="mention-header">
+            <div class="mention-name">{{ mention.name }}</div>
+            <div class="mention-section">{{ mention.section }}</div>
+          </div>
+          <div v-if="mention.message" class="mention-message">{{ mention.message }}</div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+
+/* Global Font */
+* {
+  font-family: 'Jersey 10', sans-serif;
+  box-sizing: border-box;
+}
+
+/* Background */
+.feedback-page {
+  margin: 0;
+  min-height: 100vh;
+  background: url('@/assets/images/grid.png') center/cover fixed no-repeat;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.feedback-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
 .feedback-content {
   position: relative;
   padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.301);
+  background: rgba(255, 255, 255, 0.3);
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   min-height: 450px;
   overflow: hidden;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
 }
 
 .feedback-form {
-  width: 65%;
+  width: 70%;
+  z-index: 2;
+}
+
+.feedback-form h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #340B3C;
 }
 
 .feedback-image {
   position: absolute;
   bottom: 0;
-  right: 1rem;
-  width: 30%;
+  right: 1.5rem;
+  width: 25%;
+  z-index: 1;
 }
 
 .feedback-image img {
-  width: 100%;
+  width: 90%;
   height: auto;
 }
 
@@ -77,8 +122,8 @@ label {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  font-size: 1.2em;
-  color: #663366;
+  font-size: 2rem;
+  color: #6B2855;
 }
 
 input, textarea {
@@ -98,40 +143,152 @@ textarea {
 button {
   width: 162px;
   padding: 12px 24px;
-  background: #ff99cc;
-  color: white;
+  background: #DB99C7;
+  color: #6B2855;
   border: none;
-  border-radius: 25px;
-  font-size: 1.1em;
+  border-radius: 10px;
+  font-size: 2em;
   cursor: pointer;
   transition: 0.3s;
 }
 
 button:hover:not(:disabled) {
-  background: #ff66b2;
+  background: #6B2855;
+  color: white;
 }
 
-.feedback-image {
-  flex: 1;
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Honorable Mentions Section */
+.mentions-container {
   display: flex;
-  justify-content: flex-end;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
 }
 
-.feedback-image img {
-  max-width: 100%;
-  height: auto;
+.mentions-title {
+  font-size: 3rem;
+  font-weight: bold;
+  text-align: center;
+  color: #663366;
 }
+
+.mentions-subtitle {
+  font-size: 2rem;
+  font-weight: normal;
+  text-align: center;
+  color: #9b549b;
+  margin-bottom: 15px;
+}
+
+.no-mentions {
+  text-align: center;
+  font-size: 1.2em;
+  color: gray;
+}
+
+/* Individual Mention Cards */
+.mention-card {
+  width: 100%;
+  max-width: 100%;
+  padding: 12px;
+  background: white;
+  border-left: 6px solid #721884;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  word-wrap: break-word;
+}
+
+.mention-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #663366;
+}
+
+.mention-name {
+  color: #9374C0;
+}
+
+.mention-section {
+  color: #7C4D9E;
+  font-style: italic;
+}
+
+.mention-message {
+  font-size: 1rem;
+  color: #333;
+  padding: 5px 0;
+  border-top: 1px solid #e6e6e6;
+  margin-top: 5px;
+  font-style: italic;
+}
+
+.success-message {
+  color: #97347a;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
 </style>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { supabase } from '../lib/supabaseClient'
 
-// Add this line to make imageUrl available to the template
 const imageUrl = ref(new URL('@/assets/images/feedback.png', import.meta.url).href)
-
 const name = ref('')
 const section = ref('')
-</script>
+const message = ref('')
+const loading = ref(false)
+const successMessage = ref('')
+const honorableMentions = ref([])
 
+// Fetch existing feedback from Supabase
+const fetchHonorableMentions = async () => {
+  const { data, error } = await supabase.from('honorable_mentions').select('*')
+  if (error) {
+    console.error('Error fetching honorable mentions:', error.message)
+  } else {
+    honorableMentions.value = data.reverse()
+  }
+}
+
+// Handle form submission
+const submitFeedback = async () => {
+  loading.value = true
+  successMessage.value = ''
+
+  const newEntry = { name: name.value, section: section.value, message: message.value }
+  const { error } = await supabase.from('honorable_mentions').insert([newEntry])
+
+  if (error) {
+    console.error('Error submitting feedback:', error.message)
+    alert('Failed to submit feedback. Please try again.')
+  } else {
+    successMessage.value = 'Feedback submitted successfully!'
+    honorableMentions.value.unshift(newEntry)
+    name.value = ''
+    section.value = ''
+    message.value = ''
+  }
+
+  loading.value = false
+}
+
+// Fetch data when component loads
+onMounted(fetchHonorableMentions)
+</script>

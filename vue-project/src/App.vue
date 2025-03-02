@@ -10,6 +10,13 @@ import FeedbackForm from './components/FeedbackForm.vue'
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&family=Jersey+10&display=swap');
+
+h1, h2, h3, p {
+    font-family: 'Jersey 10', serif;
+    font-style: normal;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
