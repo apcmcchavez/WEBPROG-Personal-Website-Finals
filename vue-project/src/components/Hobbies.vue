@@ -20,7 +20,7 @@
       </div>
 
       <div v-if="selectedHobby" class="right-panel">
-        <button @click="prevImage" class="nav-button">
+        <button v-if="selectedHobby !== 'arts'" @click="prevImage" class="nav-button">
           <img src="/icons/arrow-left.png" alt="Left Arrow" />
         </button>
 
@@ -28,7 +28,7 @@
           <img v-for="image in visibleImages" :key="image" :src="image" class="display-image" />
         </div>
 
-        <button @click="nextImage" class="nav-button">
+        <button v-if="selectedHobby !== 'arts'" @click="nextImage" class="nav-button">
           <img src="/icons/arrow-right.png" alt="Right Arrow" />
         </button>
       </div>
@@ -54,11 +54,13 @@ const selectHobby = (hobby) => {
 };
 
 const visibleImages = computed(() => {
-  if (!selectedHobby.value) return;
+  if (!selectedHobby.value) return [];
   const images = hobbies[selectedHobby.value];
+
   return [
     images[currentIndex.value],
-    images[(currentIndex.value + 1) % images.length]
+    images[(currentIndex.value + 1) % images.length],
+    images[(currentIndex.value + 2) % images.length],
   ];
 });
 
@@ -127,7 +129,6 @@ h2, p, button {
   width: 617px;
   margin-left: 45px;
   margin-bottom: 50px;
-
 }
 
 .hobby-button {
@@ -167,29 +168,22 @@ h2, p, button {
   position: relative;
   overflow: hidden;
 
-  /* Border styles */
   border-top: 12px solid white;
   border-left: 12px solid white;
 
-  /* Positioning adjustments */
-  margin-left: 10px; /* Moves it to the right */
-  margin-top: 40px; /* Moves it downward */
+  margin-left: 10px;
+  margin-top: 40px;
 
-  /* Layout fixes */
   display: flex !important;
   flex-wrap: nowrap !important;
   align-items: center !important;
   justify-content: center !important;
 
-  /* Rounded top-left but sharp bottom */
   border-top-left-radius: 50px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  border-top-right-radius: 30px; /* Adjust as needed */
-
+  border-top-right-radius: 30px;
 }
-
-
 
 .image-container {
   display: flex;
@@ -199,15 +193,14 @@ h2, p, button {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  gap: 0px !important;  /* Ensure no gaps */
+  gap: 0px !important;
   margin: 0 !important;
   padding: 0 !important;
-
 }
 
 .image-wrapper {
   width: 420px;
-  height: 580cm;
+  height: 580px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -215,16 +208,12 @@ h2, p, button {
   flex-shrink: 0 !important;
   margin: 0px !important;
   padding: 0px !important;
-
 }
 
 .display-image {
   width: 420px;
   height: 580px;
-
 }
-
-
 
 .nav-button img {
   width: 59px;
