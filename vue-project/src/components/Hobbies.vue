@@ -43,9 +43,9 @@ const selectedHobby = ref(null);
 const currentIndex = ref(0);
 
 const hobbies = {
-  games: ["/images/games/games (1).png", "/images/games/games (2).png", "/images/games/games (3).png"],
+  games: ["/images/games/games (1).png", "/images/games/games (2).png", "/images/games/games (3).png", "/images/games/games (4).png", "/images/games/games (5).png", "/images/games/games (6).png", "/images/games/games (7).png"],
   arts: ["/images/arts/arts (1).png", "/images/arts/arts (2).png", "/images/arts/arts (3).png"],
-  binge: ["/images/binge/binge (1).png", "/images/binge/binge (2).png", "/images/binge/binge (3).png"],
+  binge: ["/images/binge/binge (1).png", "/images/binge/binge (2).png", "/images/binge/binge (3).png", "/images/binge/binge (4).png", "/images/binge/binge (5).png", "/images/binge/binge (6).png" ],
 };
 
 const selectHobby = (hobby) => {
@@ -90,7 +90,7 @@ h2, p, button {
 }
 
 .hobbies-container {
-  padding: 50px;
+  padding: 0px;
   background: url("/images/stars.png") center/cover fixed no-repeat;
 }
 
@@ -98,7 +98,7 @@ h2, p, button {
   font-size: 70px;
   color: #340B3C;
   text-align: left;
-  margin-left: 10px;
+  margin-left: 45px;
 }
 
 .subtitle {
@@ -106,7 +106,7 @@ h2, p, button {
   color: #6B2855;
   margin-bottom: 30px;
   text-align: left;
-  margin-left: 10px;
+  margin-left: 45px;
 }
 
 .hobbies-content {
@@ -125,7 +125,9 @@ h2, p, button {
   gap: 30px;
   align-items: flex-start;
   width: 617px;
-  margin-left: 10px;
+  margin-left: 45px;
+  margin-bottom: 50px;
+
 }
 
 .hobby-button {
@@ -160,19 +162,34 @@ h2, p, button {
   flex-shrink: 0;
   background: black;
   padding: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-top: 12px solid white;
-  border-left: 12px solid white;
-  width: 1316px;
-  height: 900px;
+  width: 1450px;
+  height: 700px;
   position: relative;
   overflow: hidden;
+
+  /* Border styles */
+  border-top: 12px solid white;
+  border-left: 12px solid white;
+
+  /* Positioning adjustments */
+  margin-left: 10px; /* Moves it to the right */
+  margin-top: 40px; /* Moves it downward */
+
+  /* Layout fixes */
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  /* Rounded top-left but sharp bottom */
   border-top-left-radius: 50px;
-  /* Cutout effect on the right */
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 50px 0); /* Adjust 50px to control cutout */
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 30px; /* Adjust as needed */
+
 }
+
+
 
 .image-container {
   display: flex;
@@ -182,15 +199,32 @@ h2, p, button {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  gap: 20px;
+  gap: 0px !important;  /* Ensure no gaps */
+  margin: 0 !important;
+  padding: 0 !important;
+
+}
+
+.image-wrapper {
+  width: 420px;
+  height: 580cm;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0 !important;
+  margin: 0px !important;
+  padding: 0px !important;
+
 }
 
 .display-image {
-  max-width: 45%;
-  max-height: 90%;
-  height: auto;
-  object-fit: contain;
+  width: 420px;
+  height: 580px;
+
 }
+
+
 
 .nav-button img {
   width: 59px;
