@@ -1,119 +1,209 @@
+<script setup>
+import { ref, onMounted, nextTick } from 'vue';
+
+const showGallery = ref(false);
+const imageLoaded = ref([]);
+const flipped = ref([]);
+
+const revealGallery = async () => {
+    showGallery.value = true;
+    await nextTick();
+    imageLoaded.value = new Array(images.length).fill(false);
+    flipped.value = new Array(images.length).fill(false);
+
+    images.forEach((_, index) => {
+        setTimeout(() => {
+            imageLoaded.value[index] = true;
+        }, Math.random() * 1000);
+    });
+};
+
+const scrollToFeedback = () => {
+    document.getElementById('feedback-form').scrollIntoView({ behavior: 'smooth' });
+};
+
+const toggleFlip = (index) => {
+    flipped.value[index] = !flipped.value[index];
+};
+
+const images = [
+    { src: '/src/assets/images/gallery/Me Painting.png', width: 312.30, height: 324, text: 'Me Painting' },
+    { src: '/src/assets/images/gallery/With my Girl Besties.png', width: 497.80, height: 324, text: 'With my Girlie Besties' },
+    { src: '/src/assets/images/gallery/Me and my Siblings.png', width: 225.45, height: 324, text: 'Baguio with my Siblings' },
+    { src: '/src/assets/images/gallery/art exhibit.png', width: 496.38, height: 324, text: 'Organized my first event in College' },
+    { src: '/src/assets/images/gallery/bestiedate.png', width: 218.38, height: 324, text: 'Date with the Girls' },
+
+    { src: '/src/assets/images/gallery/choco.jpg', width: 279.31, height: 397.68, text: 'Choco Doggo' },
+    { src: '/src/assets/images/gallery/lloyd1.jpg', width: 279.31, height: 397.68, text: 'Masked Lloydie' },
+    { src: '/src/assets/images/gallery/ashy.jpg', width: 435.76, height: 397.68, text: 'Ashy Catto' },
+    { src: '/src/assets/images/gallery/parents.png', width: 305.81, height: 397.68, text: 'Mah Parents' },
+    { src: '/src/assets/images/gallery/frosty.jpg', width: 450.12, height: 397.68, text: 'Frosty Catto' },
+
+    { src: '/src/assets/images/gallery/First time baking a cake.jpg', width: 328.30, height: 224.4, text: 'Baked a Cake' },
+    { src: '/src/assets/images/gallery/first year honor list.png', width: 430.62, height: 224.4, text: 'Part of Honor Roll S.Y. 2023-2024' },
+    { src: '/src/assets/images/gallery/devcon.jpg', width: 303.26, height: 224.4, text: 'Attended DEVCON' },
+    { src: '/src/assets/images/gallery/ny2025.jpg', width: 314.11, height: 224.4, text: 'New Year 2025' },
+    { src: '/src/assets/images/gallery/crams.JPG', width: 374.02, height: 224.4, text: 'Crams Intramuros Trip 2024' }
+];
+</script>
+
 <template>
-    <div class="gallery-container" v-if="showGallery">
-      <button @click="closeGallery" class="close-btn">Close</button>
-      <div class="image-grid">
-        <img v-for="(image, index) in images" :key="index" :src="image" class="gallery-image" />
-      </div>
+    <div class="question-section">
+        <h2>Want to see a glimpse of my life?</h2>
+        <div class="buttons">
+            <button @click="revealGallery" class="yes-btn">Yes :> </button>
+            <button @click="scrollToFeedback" class="no-btn">No >:[ </button>
+        </div>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue'
-  
-  const showGallery = ref(false)
-  
-  // Image sources (replace with actual paths)
-  const images = [
-    '/src/assets/images/Me Painting.jpg',
-    '/src/assets/images/With my Girl Besties.jpg',
-    '/src/assets/images/Me and my siblings.jpg',
-    '/src/assets/images/art exhibit.png',
-    '/src/assets/images/bestiedate.jpg',
-    '/src/assets/images/choco.jpg',
-    '/src/assets/images/lloyd1.jpg',
-    '/src/assets/images/ashy.jpg',
-    '/src/assets/images/lloyd2.jpg',
-    '/src/assets/images/frosty.jpg',
-    '/src/assets/images/First time baking a cake.jpg',
-    '/src/assets/images/first year honor list.jpg',
-    '/src/assets/images/devcon.jpg',
-    '/src/assets/images/ny2025.jpg',
-    '/src/assets/images/crams.JPG'
-  ]
-  
-  // Function to open/close gallery
-  const openGallery = () => {
-    showGallery.value = true
-  }
-  
-  const closeGallery = () => {
-    showGallery.value = false
-  }
-  
-  // Expose function to parent
-  defineExpose({ openGallery })
-  </script>
-  
-  <style scoped>
-  /* Full-screen overlay */
-  .gallery-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.9);
+
+    <transition name="fade">
+        <div v-if="showGallery" class="gallery-section">
+            <h2 class="gallery-title">The world through Iyah’s lenses <3</h2>
+            <div class="gallery-grid">
+                <div v-for="(image, index) in images" 
+                     :key="index" 
+                     class="gallery-item" 
+                     :class="{ flipped: flipped[index] }"
+                     :style="{
+                        width: image.width + 'px',
+                        height: image.height + 'px',
+                        opacity: imageLoaded[index] ? 1 : 0,
+                        transform: imageLoaded[index] ? 'translateY(0)' : 'translateY(20px)'
+                     }"
+                     @click="toggleFlip(index)">
+
+                    <!-- Front: Image -->
+                    <div class="gallery-card">
+                        <div class="gallery-front">
+                            <img :src="image.src" alt="Gallery Image">
+                        </div>
+                        <!-- Back: Text -->
+                        <div class="gallery-back">
+                            <p>{{ image.text }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </transition>
+
+    <div id="feedback-form">
+        <FeedbackForm />
+    </div>
+</template>
+
+<style scoped>
+/* Fade transition */
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 0.8s ease-in-out;
+}
+.fade-enter-from, .fade-leave-to {
+    opacity: 0;
+}
+
+/* Question section */
+.question-section {
+    text-align: center;
+    margin-top: 10px;
+    color: #6B2855;
+    font-size: 60px;
+}
+.buttons {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    z-index: 1000;
-    padding: 20px;
-    overflow-y: auto;
-  }
-  
-  /* Close button */
-  .close-btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    padding: 10px 15px;
-    font-size: 1.2rem;
-    background: #ff4d4d;
+    gap: 20px;
+    margin-top: 5px;
+}
+button {
+    cursor: pointer;
+    padding: 10px 20px;
+    font-size: 30px;
+    border-radius: 25px;
     color: white;
     border: none;
-    border-radius: 5px;
+    transition: 0.3s;
+    font-family: 'Jersey 10', serif;
+    font-style: normal; 
+}
+.yes-btn {
+    background-color: #9A699A;
+}
+.no-btn {
+    background-color: #7C4D9E;
+}
+.yes-btn:hover {
+    background-color: white;
+    color: #9A699A;
+}
+.no-btn:hover {
+    background-color: white;
+    color: #7C4D9E;
+}
+
+/* Gallery Section */
+.gallery-section {
+    margin-top: 40px;
+    text-align: center;
+}
+.gallery-title {
+    margin-bottom: 20px;
+    font-size: 50px;
+    font-weight: bold;
+    color: #9374C0;
+}
+
+/* Grid layout */
+.gallery-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+/* Flip Animation */
+.gallery-item {
+    position: relative;
+    perspective: 1000px;
+    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
     cursor: pointer;
-  }
-  
-  /* Responsive Image Grid */
-  .image-grid {
-    display: grid;
-    grid-gap: 10px;
-    max-width: 90vw;
-    width: 100%;
-  }
-  
-  /* Desktop: 5 columns, 3 rows */
-  @media (min-width: 1024px) {
-    .image-grid {
-      grid-template-columns: repeat(5, 1fr);
-      grid-template-rows: repeat(3, 200px); /* Fixed height per row */
-    }
-  }
-  
-  /* Tablet: 3 columns, auto rows */
-  @media (min-width: 600px) and (max-width: 1023px) {
-    .image-grid {
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(auto-fit, 180px);
-    }
-  }
-  
-  /* Mobile: 2 columns, auto rows */
-  @media (max-width: 599px) {
-    .image-grid {
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(auto-fit, 150px);
-    }
-  }
-  
-  /* Image styles */
-  .gallery-image {
+}
+.gallery-card {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures images maintain aspect ratio */
-    border-radius: 8px;
-  }
-  </style>
-  
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+}
+.gallery-item.flipped .gallery-card {
+    transform: rotateY(180deg);
+}
+.gallery-front, .gallery-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+.gallery-front {
+    background: white;
+}
+.gallery-back {
+    background: white;
+    color: #6B2855;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    transform: rotateY(180deg);
+}
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Feedback form */
+#feedback-form {
+    margin-top: 50px;
+}
+</style>
