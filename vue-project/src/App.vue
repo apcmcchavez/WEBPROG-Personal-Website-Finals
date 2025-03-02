@@ -1,6 +1,10 @@
 <template>
-  <h1>Hello World!</h1>
+  <div>
+    <h1>Hello World!</h1>
+    <FeedbackForm />
+  </div>
 </template>
 
-<script></script>
-<style></style>
+<script setup>
+import FeedbackForm from './components/FeedbackForm.vue'
+</script>
