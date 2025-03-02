@@ -1,124 +1,137 @@
 <template>
-  <div class="feedback-form">
-    <h2>Submit Your Feedback</h2>
-    <form @submit.prevent="submitFeedback">
-      <label>
-        Name:
-        <input v-model="name" type="text" required />
-      </label>
+  <div class="feedback-container">
+    <div class="feedback-content">
+      <div class="feedback-form">
+        <h2>Hopefully you like this simple webpage of mine ^^</h2>
+        <h2>If you do not mind, I would like to know your name!</h2>
+        <form @submit.prevent="submitFeedback">
+          <label>
+            Name:
+            <input v-model="name" type="text" required />
+          </label>
 
-      <label>
-        Section:
-        <input v-model="section" type="text" required />
-      </label>
+          <label>
+            Section:
+            <input v-model="section" type="text" required />
+          </label>
 
-      <label>
-        Message (Optional):
-        <textarea v-model="message"></textarea>
-      </label>
+          <label>
+            Message (Optional):
+            <textarea v-model="message"></textarea>
+          </label>
 
-      <button type="submit">Submit</button>
-    </form>
+          <button type="submit" :disabled="loading">
+            {{ loading ? "Submitting..." : "Submit" }}
+          </button>
+        </form>
+        <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
+      </div>
+      <div class="feedback-image">
+        <img :src="imageUrl" alt="Feedback Illustration" />
+      </div>
+    </div>
 
     <h3>Honorable Mentions:</h3>
-    <ul>
-      <li v-for="mention in honorableMentions" :key="mention.id">
+    <div class="mentions-container">
+      <div v-for="(mention, index) in honorableMentions" :key="index" class="mention-card">
         <strong>{{ mention.name }}</strong> ({{ mention.section }})
         <p v-if="mention.message">{{ mention.message }}</p>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue'
-import { supabase } from '../lib/supabaseClient' // ✅ Corrected import path
-
-// Form data
-const name = ref('')
-const section = ref('')
-const message = ref('')
-
-// Honorable mentions data
-const honorableMentions = ref([])
-
-// Fetch honorable mentions from Supabase
-async function getHonorableMentions() {
-  const { data, error } = await supabase.from('honorable_mentions').select()
-
-  if (error) {
-    console.error('Error fetching data:', error)
-    return
-  }
-
-  honorableMentions.value = data
-}
-
-// Submit form data to Supabase
-async function submitFeedback() {
-  if (!name.value || !section.value) return // Ensure required fields are filled
-
-  const { error } = await supabase.from('honorable_mentions').insert([
-    { name: name.value, section: section.value, message: message.value }
-  ])
-
-  if (error) {
-    console.error('Error submitting feedback:', error)
-    return
-  }
-
-  // Refresh list after submission
-  getHonorableMentions()
-
-  // Clear input fields
-  name.value = ''
-  section.value = ''
-  message.value = ''
-}
-
-onMounted(() => {
-  getHonorableMentions()
-})
-</script>
-
 <style scoped>
+.feedback-content {
+  position: relative;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.301);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  min-height: 450px;
+  overflow: hidden;
+}
+
 .feedback-form {
-  max-width: 400px;
-  margin: auto;
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background: #f9f9f9;
+  width: 65%;
+}
+
+.feedback-image {
+  position: absolute;
+  bottom: 0;
+  right: 1rem;
+  width: 30%;
+}
+
+.feedback-image img {
+  width: 100%;
+  height: auto;
 }
 
 form {
   display: flex;
   flex-direction: column;
+  gap: 15px;
 }
 
 label {
-  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 1.2em;
+  color: #663366;
 }
 
 input, textarea {
   width: 100%;
-  padding: 8px;
-  margin-top: 4px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 10px;
+  margin-top: 8px;
+  border: 2px solid #e6e6e6;
+  border-radius: 8px;
+  font-size: 1em;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
 }
 
 button {
-  margin-top: 10px;
-  padding: 10px;
-  background: #6200ea;
+  width: 162px;
+  padding: 12px 24px;
+  background: #ff99cc;
   color: white;
   border: none;
+  border-radius: 25px;
+  font-size: 1.1em;
   cursor: pointer;
-  border-radius: 4px;
+  transition: 0.3s;
 }
 
-button:hover {
-  background: #4500b0;
+button:hover:not(:disabled) {
+  background: #ff66b2;
+}
+
+.feedback-image {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.feedback-image img {
+  max-width: 100%;
+  height: auto;
 }
 </style>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import { supabase } from '../lib/supabaseClient'
+
+// Add this line to make imageUrl available to the template
+const imageUrl = ref(new URL('@/assets/images/feedback.png', import.meta.url).href)
+
+const name = ref('')
+const section = ref('')
+</script>
+
