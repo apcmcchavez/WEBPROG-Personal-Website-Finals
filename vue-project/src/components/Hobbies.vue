@@ -160,29 +160,26 @@ h2, p, button {
 }
 
 .right-panel {
-  flex-shrink: 0;
   background: black;
   padding: 40px;
-  width: 1450px;
-  height: 700px;
+  width: 100%;
+  max-width: 1171px; /* Prevents it from exceeding this size */
+  height: 640px;
   position: relative;
-  overflow: hidden;
+  overflow: hidden; /* Ensure content does not overflow */
 
   border-top: 12px solid white;
   border-left: 12px solid white;
 
   margin-left: 10px;
-  margin-top: 40px;
+  margin-top: 75px;
 
-  display: flex !important;
-  flex-wrap: nowrap !important;
-  align-items: center !important;
-  justify-content: center !important;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
 
   border-top-left-radius: 50px;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  border-top-right-radius: 30px;
 }
 
 .image-container {
@@ -192,28 +189,26 @@ h2, p, button {
   position: relative;
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  gap: 0px !important;
-  margin: 0 !important;
-  padding: 0 !important;
+  overflow: hidden; /* Prevent overflow */
+  gap: 10px;
 }
 
 .image-wrapper {
   width: 420px;
   height: 580px;
-  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0 !important;
-  margin: 0px !important;
-  padding: 0px !important;
+  flex-shrink: 0;
 }
 
 .display-image {
-  width: 420px;
-  height: 580px;
+  width: 325px;
+  max-width: 100%; /* Prevent overflow */
+  max-height: 100%;
+  object-fit: contain; /* Ensures images do not exceed container */
 }
+
 
 .nav-button img {
   width: 59px;
