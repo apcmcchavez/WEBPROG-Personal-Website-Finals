@@ -86,13 +86,18 @@ const nextImage = () => {
   box-sizing: border-box;
 }
 
+body, html {
+  overflow-x: hidden;
+}
+
 h2, p, button {
   font-family: 'Jersey 10', serif;
   font-style: normal;
 }
 
 .hobbies-container {
-  padding: 0px;
+  padding: 150px;
+  min-height: 900px;
   background: url("/images/stars.png") center/cover fixed no-repeat;
 }
 
@@ -116,9 +121,10 @@ h2, p, button {
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
-  max-width: 1920px;
-  gap: 50px;
+  max-width: 100vw; /* max-width: 1920px; */
+  gap: 30px;
   margin-left: 10px;
+  flex-wrap: wrap;
 }
 
 .hobby-buttons {
@@ -129,6 +135,7 @@ h2, p, button {
   width: 617px;
   margin-left: 45px;
   margin-bottom: 50px;
+  margin-right:  60px;
 }
 
 .hobby-button {
@@ -162,22 +169,24 @@ h2, p, button {
 .right-panel {
   background: black;
   padding: 40px;
-  width: 100%;
-  max-width: 1171px; /* Prevents it from exceeding this size */
+  max-width: calc(100vw - 50px); /* Limits max width */
   height: 640px;
   position: relative;
+  right: 0; /* Aligns to the right */
+  top: auto; /*top: 75px */
   overflow: hidden; /* Ensure content does not overflow */
 
   border-top: 12px solid white;
   border-left: 12px solid white;
 
-  margin-left: 10px;
-  margin-top: 75px;
+  margin-left: auto;  /*margin-left: 25px */
+  margin-top: 0; /*margin-top: 152.1px */
 
   display: flex;
+  flex-direction: column;
   flex-wrap: nowrap;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
+  justify-content: flex-start;
 
   border-top-left-radius: 50px;
 }
@@ -220,4 +229,9 @@ h2, p, button {
   border: none;
   cursor: pointer;
 }
+
+.hobbies-container, .hobbies-content, .right-panel {
+  outline: 2px solid red; /* Helps identify layout issues */
+}
+
 </style>
