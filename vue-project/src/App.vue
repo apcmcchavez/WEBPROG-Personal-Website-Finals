@@ -1,6 +1,11 @@
 <template>
   <div>
 
+    <!-- Goals Section -->
+    <section id="goals-section">
+      <Goals />
+    </section>
+
     <!-- Gallery Section -->
     <section id="gallery-section">
       <Gallery @scroll-to-feedback="scrollToFeedback" />
@@ -10,10 +15,12 @@
     <section id="feedback-section">
       <FeedbackForm />
     </section>
+    
   </div>
 </template>
 
 <script setup>
+import Goals from './components/Goals.vue';
 import FeedbackForm from './components/FeedbackForm.vue';
 import Gallery from './components/Gallery.vue';
 
