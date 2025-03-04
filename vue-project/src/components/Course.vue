@@ -19,105 +19,128 @@
   </template>
   
   <style scoped>
-  /* Main Container */
-    .course-container {
-    display: flex;
-    align-items: center; /* Ensures items stay properly aligned */
-    width: 100vw;
-    height: 100vh;
-    background-image: url('/images/checkered.png'); /* Checkered background */
-    background-size: cover;
-    background-position: center;
-    margin: 0;
-    padding: 0;
-    }
+/* 🔧 Global Fixes */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* Prevents unwanted horizontal scroll */
+}
 
-    /* Left Image */
-    .course-image {
-    width: 1044px;
-    height: 100vh; /* Ensure full height */
-    object-fit: cover;
-    flex-shrink: 0;
-    display: block; /* Fixes bottom space issue */
-    margin: 0;
-    padding: 0;
-    }
+/* 📌 Main Container */
+.course-container {
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/images/checkered.png');
+  background-size: cover;
+  background-position: center;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
 
-    /* Right Text Container */
-    .text-container {
-    display: flex;
+/* 📸 Left Image */
+.course-image {
+  width: 1044px;
+  height: 100vh; /* Full viewport height */
+  object-fit: cover;
+  flex-shrink: 0;
+  display: block;
+  margin: 0;
+  padding: 0;
+  position: absolute; /* Force flush to the left */
+  left: 0;
+  top: 0;
+  
+}
+
+/* 📝 Right Text Container */
+.text-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgba(107, 40, 85, 0.62); /* Transparent purple */
+  padding: 40px;
+  border-radius: 15px;
+  width: 600px;
+  height: auto;
+  margin-left: 1140px; /* Matches image width */
+}
+
+/* 🎨 Typography & Spacing */
+h2 {
+  font-size: clamp(30px, 3vw, 48px); /* Responsive heading */
+  color: #6B1E6B;
+  margin-bottom: 5px;
+}
+
+p {
+  font-size: clamp(18px, 1.5vw, 30px);
+  color: white;
+  line-height: 1.4;
+  text-align: justify; /* Makes text look cleaner */
+}
+
+/* 📱 Responsive Design */
+@media (max-width: 1400px) {
+  .course-image {
+    width: 900px;
+  }
+  .text-container {
+    margin-left: 920px;
+    width: 500px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .course-container {
     flex-direction: column;
-    justify-content: center;
-    background-color: rgba(107, 40, 85, 0.62); /* Purple with 62% opacity */
-    padding: 40px;
-    border-radius: 15px;
-    max-width: 600px; /* Ensures it does NOT stretch */
-    height: auto; /* Prevents stretching */
-    margin-left: 95px; /* Increased margin to create more gap */
-    }
-
-
-  
-  /* Text Box */
-  .info-box {
-    margin-bottom: 20px;
+    align-items: center;
+    height: auto;
+    padding: 20px 0;
   }
-  
+
+  .course-image {
+    width: 100%;
+    height: auto;
+    position: relative; /* Reverts absolute positioning */
+  }
+
+  .text-container {
+    width: 90%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-top: 20px;
+    padding: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .course-image {
+    width: 100%;
+  }
+
+  .text-container {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
   h2 {
-    font-size: clamp(48px, 3vw, 30px); /* Responsive heading */
-    color: #6B1E6B;
-    margin-bottom: 3px;
+    font-size: 24px;
   }
-  
+
   p {
-    font-size: clamp(30px, 1.5vw, 18px);
-    color: white;
-    line-height: 1.4;
+    font-size: 14px;
   }
-  
-  /* Responsive */
-  @media (max-width: 1400px) {
-    .course-image {
-      width: 900px;
-      height: 100vh;
-    }
+
+  .text-container {
+    padding: 15px;
   }
-  
-  @media (max-width: 1024px) {
-    .course-container {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .course-image {
-      width: 100%;
-      height: auto;
-    }
-  
-    .text-container {
-      max-width: 90%;
-      margin-top: 20px;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .course-image {
-      width: 100%;
-    }
-  
-    .text-container {
-      padding: 20px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    h2 {
-      font-size: 22px;
-    }
-  
-    p {
-      font-size: 14px;
-    }
-  }
+}
+
   </style>
   
