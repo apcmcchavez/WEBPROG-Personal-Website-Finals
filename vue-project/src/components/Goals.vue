@@ -1,95 +1,112 @@
 <template>
-    <div class="goals-page">
-      <div class="heart-container">
-        <img src="/images/heart.png" alt="Heart Shape" class="heart" />
-        <div class="text">
-          <h1>My Goals</h1>
-          <p>
-            I want to be rich to the point where I wouldn't have to worry about indulging in my wants
-            while also providing for my family.
-          </p>
-        </div>
+  <div class="goals-container">
+    <div class="heart-container">
+      <img src="/images/heart.png" class="heart" alt="Heart Shape" />
+      <div class="text-content">
+        <h1>My Goals</h1>
+        <p>
+          I want to be rich to the point where I wouldn't have to worry about indulging in my wants while also providing for my family.
+        </p>
       </div>
     </div>
-  </template>
-  
-  <style scoped>
-  /* Prevents overflow issues */
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    overflow-x: hidden;
-  }
-  
-  /* Full-page background */
-  .goals-page {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: url('/images/checkered.png') center/cover no-repeat;
-  }
-  
-  /* Heart and text container */
+  </div>
+</template>
+
+<style scoped>
+/* Global Fixes */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Main Container */
+.goals-container {
+  position: relative;
+  width: 100%; /* Fixed from 100vw */
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-image: url('/images/checkered.png'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat; /* Prevents tiling */
+}
+
+/* Heart Container */
+.heart-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: min(50vw, 899px); /* Matches heart natural size */
+  max-width: 899px;
+}
+
+/* Heart Image */
+.heart {
+  width: 100%;
+  height: auto;
+}
+
+/* Text Positioning */
+.text-content {
+  position: absolute;
+  width: 55%; 
+  max-width: 450px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Header */
+h1 {
+  font-size: clamp(20px, 3vw, 30px);
+  color: #9374C0;
+  margin-bottom: 12px;
+}
+
+/* Paragraph */
+p {
+  font-size: clamp(14px, 1.5vw, 18px);
+  color: white;
+  line-height: 1.4;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
   .heart-container {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 60%;
-    max-width: 900px;
+    width: 60vw;
   }
-  
-  /* Heart Image */
-  .heart {
-    width: 100%;
-    height: auto;
-  }
-  
-  /* Text inside the heart */
-  .text {
-    position: absolute;
-    text-align: center;
-    color: white;
-    font-family: 'Jersey 10', sans-serif;
+
+  .text-content {
     width: 70%;
-    max-width: 450px;
   }
-  
-  /* Text scaling */
+}
+
+@media (max-width: 480px) {
+  .heart-container {
+    width: 75vw;
+  }
+
+  .text-content {
+    width: 80%;
+  }
+
   h1 {
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    margin-bottom: 10px;
-    color: #9374C0;
+    font-size: 18px;
   }
-  
+
   p {
-    font-size: clamp(1rem, 2vw, 1.8rem);
-    line-height: 1.3;
+    font-size: 14px;
   }
-  
-  /* Responsive adjustments */
-  @media (max-width: 1024px) {
-    .heart-container {
-      width: 70%;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .heart-container {
-      width: 90%;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .text {
-      width: 80%;
-      max-width: 250px;
-    }
-  }
-  </style>
-  
+}
+</style>
