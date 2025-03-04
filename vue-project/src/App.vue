@@ -6,6 +6,11 @@
     <About />
     </section>  
 
+    <!-- Education Section -->
+    <section id="educ-section">
+    <Educ />
+    </section>
+
     <!-- Course and IT Experience Section -->
     <section id="course-section">
     <Course />
@@ -31,6 +36,7 @@
 
 <script setup>
 import About from './components/About.vue';
+import Educ from './components/Educ.vue';
 import Course from './components/Course.vue';
 import Goals from './components/Goals.vue';
 import FeedbackForm from './components/FeedbackForm.vue';
