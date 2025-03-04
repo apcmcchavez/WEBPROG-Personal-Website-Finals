@@ -1,6 +1,11 @@
 <template>
   <div>
 
+    <!-- Course and IT Experience Section -->
+    <section id="course-section">
+    <Course />
+    </section>  
+
     <!-- Goals Section -->
     <section id="goals-section">
       <Goals />
@@ -20,6 +25,7 @@
 </template>
 
 <script setup>
+import Course from './components/Course.vue';
 import Goals from './components/Goals.vue';
 import FeedbackForm from './components/FeedbackForm.vue';
 import Gallery from './components/Gallery.vue';
@@ -45,6 +51,8 @@ html, body {
   padding: 0;
   width: 100%;
   height: 100%;
-  background-color: black; /* Ensure full background coverage */
+  background-color: black;
+  overflow-x: hidden; /* Prevents horizontal scrolling */
 }
+
 </style>
