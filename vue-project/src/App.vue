@@ -1,6 +1,11 @@
 <template>
   <div>
 
+    <!-- About Me Section -->
+    <section id="about-section">
+    <About />
+    </section>  
+
     <!-- Course and IT Experience Section -->
     <section id="course-section">
     <Course />
@@ -25,6 +30,7 @@
 </template>
 
 <script setup>
+import About from './components/About.vue';
 import Course from './components/Course.vue';
 import Goals from './components/Goals.vue';
 import FeedbackForm from './components/FeedbackForm.vue';
