@@ -34,7 +34,7 @@ html, body {
   align-items: center;
   width: 100vw;
   height: 100vh;
-  background-image: url('/images/checkered.png');
+  background-image: url('/images/grid.png');
   background-size: cover;
   background-position: center;
   margin: 0;
@@ -62,7 +62,7 @@ html, body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: rgba(107, 40, 85, 0.62); /* Transparent purple */
+  background-color: rgba(52, 11, 60, 0.68); /* Transparent purple */
   padding: 40px;
   border-radius: 15px;
   width: 600px;
@@ -73,7 +73,7 @@ html, body {
 /* 🎨 Typography & Spacing */
 h2 {
   font-size: clamp(30px, 3vw, 48px); /* Responsive heading */
-  color: #6B1E6B;
+  color: #BE81BE;
   margin-bottom: 5px;
 }
 
