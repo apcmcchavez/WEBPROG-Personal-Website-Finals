@@ -1,237 +1,326 @@
 <template>
   <div class="hobbies-container">
-    <h2 class="title">Hobbies and Interests</h2>
-    <p class="subtitle">My hobbies and interests, such as gaming, art, and binge-watching, are shared here.</p>
+    <!-- Title & Subtitle -->
+    <div class="text-container">
+      <h1>Hobbies and Interests</h1>
+      <p>My hobbies and interests, such as gaming, art, and binge-watching, are shared here.</p>
+    </div>
 
-    <div class="hobbies-content">
+    <div class="content">
+      <!-- Hobby Buttons -->
       <div class="hobby-buttons">
-        <button @click="selectHobby('games')" class="hobby-button">
-          <span>GAMES</span>
-          <img src="/icons/games.png" alt="Games Icon" class="icon" />
-        </button>
-        <button @click="selectHobby('arts')" class="hobby-button">
-          <span>ARTS N’ CRAFTS</span>
-          <img src="/icons/arts.png" alt="Arts Icon" class="icon" />
-        </button>
-        <button @click="selectHobby('binge')" class="hobby-button">
-          <span>BINGE WATCHING</span>
-          <img src="/icons/binge.png" alt="Binge Icon" class="icon" />
+        <button 
+          v-for="(hobby, index) in hobbies" 
+          :key="index" 
+          @click="togglePanel(hobby.name)"
+          :class="{ active: activeHobby === hobby.name }"
+        >
+          <span>{{ hobby.label }}</span>
+          <img :src="hobby.icon" alt="Hobby Icon" />
         </button>
       </div>
 
-      <div v-if="selectedHobby" class="right-panel">
-        <button v-if="selectedHobby !== 'arts'" @click="prevImage" class="nav-button">
-          <img src="/icons/arrow-left.png" alt="Left Arrow" />
-        </button>
+      <!-- Right Panel (Inside Hobbies Section) -->
+      <div v-if="activeHobby" class="right-panel">
+        <div class="carousel">
+          <img 
+            v-if="showArrows"
+            class="arrow left-arrow" 
+            src="/icons/arrow-left.png" 
+            @click="prevImage"
+            alt="Left Arrow"
+          />
+          
+          <!-- Show three images dynamically -->
+          <div class="image-container">
+            <img 
+              v-for="(image, index) in displayedImages" 
+              :key="index" 
+              :src="image" 
+              class="hobby-image" 
+              alt="Hobby Image"
+            />
+          </div>
 
-        <div class="image-container">
-          <img v-for="image in visibleImages" :key="image" :src="image" class="display-image" />
+          <img 
+            v-if="showArrows"
+            class="arrow right-arrow" 
+            src="/icons/arrow-right.png" 
+            @click="nextImage"
+            alt="Right Arrow"
+          />
         </div>
-
-        <button v-if="selectedHobby !== 'arts'" @click="nextImage" class="nav-button">
-          <img src="/icons/arrow-right.png" alt="Right Arrow" />
-        </button>
       </div>
+
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref, computed } from "vue";
+<script>
+export default {
+  data() {
+    return {
+      activeHobby: null,
+      currentImage: 0,
+      hobbies: [
+        { name: "games", label: "GAMES", icon: "/icons/games.png" },
+        { name: "arts", label: "ARTS N' CRAFTS", icon: "/icons/arts.png" },
+        { name: "binge", label: "BINGE WATCHING", icon: "/icons/binge.png" }
+      ],
+      images: {
+        games: [
+          "/images/games/games-1.png",
+          "/images/games/games-2.png",
+          "/images/games/games-3.png",
+          "/images/games/games-4.png",
+          "/images/games/games-5.png",
+          "/images/games/games-6.png",
+          "/images/games/games-7.png"
+        ],
+        arts: [
+          "/images/arts/art-1.png",
+          "/images/arts/art-2.png",
+          "/images/arts/art-3.png"
+        ],
+        binge: [
+          "/images/binge/binge-1.png",
+          "/images/binge/binge-2.png",
+          "/images/binge/binge-3.png",
+          "/images/binge/binge-4.png",
+          "/images/binge/binge-5.png",
+          "/images/binge/binge-6.png"
+        ]
+      }
+    };
+  },
+  computed: {
+    hobbyImages() {
+      return this.activeHobby ? this.images[this.activeHobby] || [] : [];
+    },
+    displayedImages() {
+      if (!this.hobbyImages.length) return [];
 
-const selectedHobby = ref(null);
-const currentIndex = ref(0);
+      let startIndex = this.currentImage;
+      let endIndex = (startIndex + 3) % this.hobbyImages.length;
 
-const hobbies = {
-  games: ["/images/games/games (1).png", "/images/games/games (2).png", "/images/games/games (3).png", "/images/games/games (4).png", "/images/games/games (5).png", "/images/games/games (6).png", "/images/games/games (7).png"],
-  arts: ["/images/arts/arts (1).png", "/images/arts/arts (2).png", "/images/arts/arts (3).png"],
-  binge: ["/images/binge/binge (1).png", "/images/binge/binge (2).png", "/images/binge/binge (3).png", "/images/binge/binge (4).png", "/images/binge/binge (5).png", "/images/binge/binge (6).png" ],
-};
+      if (endIndex > startIndex) {
+        return this.hobbyImages.slice(startIndex, endIndex);
+      } else {
+        return [
+          ...this.hobbyImages.slice(startIndex), 
+          ...this.hobbyImages.slice(0, endIndex)
+        ];
+      }
+    },
+    showArrows() {
+      return this.hobbyImages.length > 3;
+    }
+  },
+  methods: {
+  togglePanel(hobby) {
+    this.currentImage = 0; // Reset image index when switching
+    this.activeHobby = this.activeHobby === hobby ? null : hobby;
+  },
+  prevImage() {
+    const imageElements = document.querySelectorAll(".hobby-image");
+    
+    imageElements.forEach(img => {
+      img.classList.add("fade-right"); // All images fade & move right
+    });
 
-const selectHobby = (hobby) => {
-  selectedHobby.value = hobby;
-  currentIndex.value = 0;
-};
+    setTimeout(() => {
+      this.currentImage = this.currentImage === 0 ? this.hobbyImages.length - 1 : this.currentImage - 1;
+      
+      setTimeout(() => {
+        imageElements.forEach(img => {
+          img.classList.remove("fade-right"); // Remove effect after change
+        });
+      }, 50);
+    }, 300);
+  },
+  nextImage() {
+    const imageElements = document.querySelectorAll(".hobby-image");
 
-const visibleImages = computed(() => {
-  if (!selectedHobby.value) return [];
-  const images = hobbies[selectedHobby.value];
+    imageElements.forEach(img => {
+      img.classList.add("fade-left"); // All images fade & move left
+    });
 
-  return [
-    images[currentIndex.value],
-    images[(currentIndex.value + 1) % images.length],
-    images[(currentIndex.value + 2) % images.length],
-  ];
-});
+    setTimeout(() => {
+      this.currentImage = this.currentImage === this.hobbyImages.length - 1 ? 0 : this.currentImage + 1;
 
-const prevImage = () => {
-  if (selectedHobby.value) {
-    currentIndex.value = (currentIndex.value - 1 + hobbies[selectedHobby.value].length) % hobbies[selectedHobby.value].length;
+      setTimeout(() => {
+        imageElements.forEach(img => {
+          img.classList.remove("fade-left"); // Remove effect after change
+        });
+      }, 50);
+    }, 300);
   }
-};
-
-const nextImage = () => {
-  if (selectedHobby.value) {
-    currentIndex.value = (currentIndex.value + 1) % hobbies[selectedHobby.value].length;
-  }
+}
 };
 </script>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&family=Jersey+10&display=swap');
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body, html {
-  overflow-x: hidden;
-}
-
-h2, p, button {
-  font-family: 'Jersey 10', serif;
-  font-style: normal;
-}
-
+<style scoped>
 .hobbies-container {
-  padding: 150px;
-  min-height: 900px;
-  background: url("/images/stars.png") center/cover fixed no-repeat;
+  background: url("/images/stars.png") no-repeat center center fixed;
+  background-size: cover;
+  padding: 50px;
+  position: relative; /* Keeps panel inside the section */
 }
 
-.title {
-  font-size: 70px;
+/* Title & Subtitle */
+.text-container h1 {
   color: #340B3C;
-  text-align: left;
-  margin-left: 45px;
+  font-size: 75px;
+  font-weight: bold;
+  padding-top: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
-
-.subtitle {
-  font-size: 45px;
+.text-container p {
   color: #6B2855;
-  margin-bottom: 30px;
-  text-align: left;
-  margin-left: 45px;
+  font-size: 45px;
+  margin-top: 0px;
+  margin-bottom: 45px;
 }
 
-.hobbies-content {
+/* Content Layout */
+.content {
   display: flex;
   align-items: flex-start;
-  justify-content: flex-start;
-  width: 100%;
-  max-width: 100vw; /* max-width: 1920px; */
-  gap: 30px;
-  margin-left: 10px;
-  flex-wrap: wrap;
+  position: relative; /* Keeps the right panel inside */
 }
 
+/* Hobby Buttons */
 .hobby-buttons {
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  align-items: flex-start;
-  width: 617px;
-  margin-left: 45px;
-  margin-bottom: 50px;
-  margin-right:  60px;
+  gap: 20px;
 }
 
-.hobby-button {
+/* Hobby Buttons */
+/* Hobby Buttons */
+.hobby-buttons button {
+  width: 617px;
+  height: 201px;
+  background-color: #FFFFFF;
+  border-radius: 19px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 617px;
-  height: 201px;
-  font-size: 90px;
-  color: #6B2855;
-  background: white;
-  border: none;
-  border-radius: 20px;
   padding: 20px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: transform 0.2s ease-in-out;
-  text-align: left;
-}
-
-.hobby-button:hover {
-  transform: scale(1.05);
-  border: 10px solid #6B2855;
-}
-
-.icon {
-  width: 135px;
-  height: 135px;
-}
-
-.right-panel {
-  background: black;
-  padding: 40px;
-  max-width: calc(100vw - 50px); /* Limits max width */
-  height: 640px;
-  position: relative;
-  right: 0; /* Aligns to the right */
-  top: auto; /*top: 75px */
-  overflow: hidden; /* Ensure content does not overflow */
-
-  border-top: 12px solid white;
-  border-left: 12px solid white;
-
-  margin-left: auto;  /*margin-left: 25px */
-  margin-top: 0; /*margin-top: 152.1px */
-
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  align-items: stretch;
-  justify-content: flex-start;
-
-  border-top-left-radius: 50px;
-}
-
-.image-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden; /* Prevent overflow */
-  gap: 10px;
-}
-
-.image-wrapper {
-  width: 420px;
-  height: 580px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.display-image {
-  width: 325px;
-  max-width: 100%; /* Prevent overflow */
-  max-height: 100%;
-  object-fit: contain; /* Ensures images do not exceed container */
-}
-
-
-.nav-button img {
-  width: 59px;
-  height: 118px;
-}
-
-.nav-button {
-  background: none;
   border: none;
   cursor: pointer;
+  transition: border 0.3s ease-in-out, background 0.3s ease-in-out;
+  text-align: left;
+  padding-left: 40px;
+  border: #ffffff;
 }
 
-.hobbies-container, .hobbies-content, .right-panel {
-  outline: 2px solid red; /* Helps identify layout issues */
+/* Button outline appears on hover */
+.hobby-buttons button:hover {
+  border: 12px solid #6B2855;
+  background-color: #ffffff; 
 }
+
+/* Outline remains when active */
+.hobby-buttons button.active {
+  border: 12px solid #6B2855;
+}
+
+.hobby-buttons span {
+  color: #6B2855;
+  font-family: 'Jersey 10', serif;
+  font-size: 125px;
+  line-height: 80px;
+}
+
+.hobby-buttons img {
+  width: 130px;
+  height: 130px;
+}
+
+/* Right Panel */
+.right-panel {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 750px;
+  top: 50px;
+  background-color: black;
+  width: 1305px;
+  height: 65vh;
+  border-left: 12px solid white;
+  border-top: 12px solid white;
+  border-top-left-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* This prevents scrolling */
+  white-space: nowrap; /* Keeps images in a single row */
+}
+
+.right-panel img {
+  height: 45vh; /* Adjust so images fit */
+  object-fit: contain;
+  display: inline-block; /* Ensures images stay in a row */
+  padding-top: 0;
+}
+
+/* Carousel */
+.carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  position: relative;
+}
+
+.hobby-image {
+  width: auto;
+  margin: 20px;
+  max-width: 70%;
+  max-height: 70vh;
+  object-fit: contain;
+  align-items: center;
+  position: relative;
+  top: -20px;
+  opacity: 1;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.hobby-image.fade-left {
+  transform: translateX(-50px); /* Slight left shift */
+  opacity: 0.3; /* Fades slightly */
+}
+
+.hobby-image.fade-right {
+  transform: translateX(50px); /* Slight right shift */
+  opacity: 0.3; /* Fades slightly */
+}
+
+.hobby-image:hover {
+  filter: drop-shadow(0px 0px 15px white);
+}
+
+/* Arrow Buttons */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px; /* Adjust size */
+  height: 50px;
+  cursor: pointer;
+  z-index: 10; /* Ensure they stay above images */
+}
+
+.left-arrow {
+  left: -75px;
+}
+
+.right-arrow {
+  right: -75px;
+}
+
+
 
 </style>

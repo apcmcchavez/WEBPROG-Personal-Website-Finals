@@ -1,5 +1,9 @@
 <template>
   <div>
+    <!-- Navbar Section -->
+    <section id="navbar-section">
+    <NavBar />
+    </section>  
 
     <!-- About Me Section -->
     <section id="about-section">
@@ -14,6 +18,11 @@
     <!-- Course and IT Experience Section -->
     <section id="course-section">
     <Course />
+    </section>  
+
+    <!-- Hobbies Section -->
+    <section id="hobbies-section">
+    <Hobbies />
     </section>  
 
     <!-- Goals Section -->
@@ -41,10 +50,11 @@
 </template>
 
 <script setup>
+import NavBar from './components/NavBar.vue';
 import About from './components/About.vue';
 import Educ from './components/Educ.vue';
 import Course from './components/Course.vue';
-
+import Hobbies from './components/Hobbies.vue';
 import Goals from './components/Goals.vue';
 import Gallery from './components/Gallery.vue';
 import FeedbackForm from './components/FeedbackForm.vue';

@@ -161,7 +161,7 @@ export default {
 
 .sub-title {
   font-size: 30px;
-  color: #0c0c0c;
+  color: #6B2855;
   margin: 0px;
 }
 
