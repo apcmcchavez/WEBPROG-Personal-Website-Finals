@@ -28,7 +28,7 @@
           <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
         </div>
         <div class="feedback-image">
-          <img :src="imageUrl" alt="Feedback Illustration" />
+          <img src="/images/feedback.png" alt="Feedback Illustration" />
         </div>
       </div>
 
@@ -245,34 +245,61 @@ button:disabled {
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { supabase } from '@/lib/supabaseClient' // Adjust the import path if needed
 
+// Reactive variables for form inputs
 const name = ref('')
 const section = ref('')
 const message = ref('')
 const loading = ref(false)
 const successMessage = ref('')
 const honorableMentions = ref([])
-const imageUrl = '/images/feedback.png'
 
-const submitFeedback = () => {
+// Function to submit feedback
+const submitFeedback = async () => {
   loading.value = true
+  successMessage.value = ''
 
-  setTimeout(() => {
-    honorableMentions.value.push({
-      name: name.value,
-      section: section.value,
-      message: message.value
-    })
+  const { data, error } = await supabase
+    .from('honorable_mentions') // Table name in Supabase
+    .insert([{ 
+      name: name.value, 
+      section: section.value, 
+      message: message.value 
+    }])
 
+  if (error) {
+    console.error('Error submitting feedback:', error.message)
+    successMessage.value = 'Failed to submit feedback. Please try again.'
+  } else {
     successMessage.value = 'Thank you for your feedback!'
-    name.value = ''
-    section.value = ''
-    message.value = ''
-    loading.value = false
-  }, 1000)
+    
+    // Refresh the list to immediately show the new entry
+    fetchFeedbacks()
+  }
+
+  // Clear form fields
+  name.value = ''
+  section.value = ''
+  message.value = ''
+  loading.value = false
 }
 
-onMounted(() => {
-  honorableMentions.value = []
-})
+// Function to fetch all feedback from Supabase
+const fetchFeedbacks = async () => {
+  const { data, error } = await supabase
+    .from('honorable_mentions')
+    .select('*')
+    .order('id', { ascending: false }) // Newest first
+
+  if (error) {
+    console.error('Error fetching feedbacks:', error.message)
+  } else {
+    honorableMentions.value = data || []
+  }
+}
+
+// Fetch feedback when the page loads
+onMounted(fetchFeedbacks)
 </script>
+
