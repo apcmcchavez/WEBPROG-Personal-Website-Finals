@@ -49,15 +49,18 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative;
-  z-index: 100;
+  position: relative; /* Remove `fixed` or `absolute` */
+  width: 100%;
+  z-index: 400;
 }
+
+
 
 .iyah-text {
   font-family: 'Jersey 10', serif;
   font-size: 90px;
   white-space: nowrap;
-  margin-left: 150px;
+  margin-left: 60px;
   margin-top: 0px;
   margin-bottom: 0px;
   font-weight: normal;
@@ -73,7 +76,7 @@ nav {
 .folders-container {
   display: flex;
   gap: 30px;
-  margin-right: 80px;
+  margin-right: 30px;
 }
 
 .folder-img {

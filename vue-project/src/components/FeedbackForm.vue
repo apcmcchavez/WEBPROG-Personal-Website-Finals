@@ -233,6 +233,9 @@ button:disabled {
   border-top: 1px solid #e6e6e6;
   margin-top: 5px;
   font-style: italic;
+  white-space: pre-wrap; /* Preserve spaces and line breaks */
+  font-family: monospace; /* Ensure ASCII art aligns properly */
+  overflow-x: auto; /* Allow horizontal scrolling if necessary */
 }
 
 .success-message {
