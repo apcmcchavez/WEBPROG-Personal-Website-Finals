@@ -1,5 +1,7 @@
 <template>
   <div class="education-page">
+     <!-- Fade Overlay -->
+    <div class="fade-overlay"></div>
     <!-- Background Image -->
     <div class="background"></div>
 
@@ -9,8 +11,8 @@
       <p class="sub-title">Here are the schools I attended all throughout the years.</p>
     </div>
 
-    <!-- Education Cards Container -->
-    <div class="education-container">
+    <!-- Education Cards Carousel -->
+    <div ref="carousel" class="education-container">
       <div class="education-scroll">
         <div
           v-for="(school, index) in schools"
@@ -78,7 +80,7 @@ export default {
         {
           logo: "/images/educ-logo/tirona.png",
           background: "/images/education/tirona-school.jpg",
-          name: "Emiliano Tria Tirona Memorial\nNational Integrated High School",
+          name: "Emiliano Tria Tirona Memorial National Integrated High School",
           years: "2017-2021",
           awards: [
             { level: "Grade 7", title: " With Honors" },
@@ -127,6 +129,22 @@ export default {
   overflow: hidden;
 }
 
+/* Fade Overlay (specific to education section) */
+.education-page {
+  position: relative; /* Ensures the fade overlay is positioned inside */
+}
+
+.fade-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 15px; /* Adjust height as needed */
+  background: linear-gradient(to bottom, #340b3c85, rgba(52, 11, 60, 0)); /* Fades out */
+  pointer-events: none; /* Ensures it doesn’t block interactions */
+  z-index: 10; /* Keeps it above other content */
+}
+
 /* Header Section */
 .header-section {
   text-align: left;
@@ -137,6 +155,7 @@ export default {
   font-size: 75px;
   color: #340b3c;
   font-weight: bold;
+  padding-top: 25px;
   margin: 0px;
 }
 
@@ -146,21 +165,54 @@ export default {
   margin: 0px;
 }
 
-/* Education Cards */
-.education-container {
+/* Fade Overlay */
+.fade-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  overflow-x: auto;
-  white-space: nowrap;
-  padding: 10px;
+  height: 85px; /* Adjust height as needed */
+  background: linear-gradient(to bottom, #402146, rgba(52, 11, 60, 0)); /* Fades out */
+  pointer-events: none; /* Ensures it doesn't interfere with interactions */
 }
 
+/* Education Cards Carousel */
+.education-container {
+  width: 100%;
+  overflow-x: auto; /* Enables horizontal scrolling */
+  overflow-y: hidden; /* Prevent vertical scrolling */
+  white-space: nowrap;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  scroll-behavior: smooth; /* Enables smooth scrolling */
+}
+
+/* Hide Scrollbar */
+.education-container::-webkit-scrollbar {
+  width: 0; /* Completely hides scrollbar */
+  height: 5px;
+}
+
+.education-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+.education-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Scrollable Content */
 .education-scroll {
   display: flex;
   gap: 20px;
   padding-bottom: 10px;
+  flex-wrap: nowrap;
   width: max-content;
 }
 
+/* Hover Effect for Education Cards */
 .education-card {
   width: 320px;
   height: 470px;
@@ -175,10 +227,17 @@ export default {
   text-align: center;
   flex-shrink: 0;
   overflow: hidden;
-  backdrop-filter: blur(3px); /* Ensures the blur applies to the background */
+  backdrop-filter: blur(3px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Fix: Overlay should match the container's full height */
+.education-card:hover {
+  transform: scale(1.05); /* Makes the card bigger */
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3); /* Adds a subtle shadow */
+}
+
+
+/* Overlay */
 .overlay {
   position: absolute;
   width: 100%;
@@ -189,13 +248,13 @@ export default {
   left: 0;
 }
 
-/* Adjusted logo spacing */
+/* School Logo */
 .school-logo {
-  width: 160px; /* Made smaller */
+  width: 160px;
   height: 160px;
   position: relative;
   z-index: 1;
-  margin-top: 20px; /* Adds space above the logo */
+  margin-top: 20px;
 }
 
 /* School Info */
@@ -223,10 +282,10 @@ export default {
   margin-bottom: 13px;
 }
 
-/* Increased font sizes */
+/* Awards */
 .awards p {
   margin: 2px 0;
-  font-size: 22px;
+  font-size: 24px;
 }
 
 .year-level {
@@ -238,12 +297,128 @@ export default {
   color: white;
 }
 
-/* Add text shadow for better readability */
+/* Text shadow for readability */
 .school-name,
 .school-years,
 .awards p {
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
 }
 
+/* Make education cards adjust for smaller screens */
+@media (max-width: 780px) {
+  .education-page {
+    padding: 30px; /* Reduce padding for smaller screens */
+    height: auto; /* Allow it to expand */
+  }
+
+  .main-title {
+    font-size: 60px; /* Reduce font size */
+  }
+
+  .sub-title {
+    font-size: 24px; /* Smaller subtitle */
+  }
+
+  .education-container {
+    flex-wrap: wrap; /* Allow cards to wrap instead of overflow */
+    justify-content: center; /* Center cards */
+  }
+
+  .education-card {
+    width: 280px; /* Reduce card size */
+    height: 420px;
+  }
+
+  .school-logo {
+    width: 140px; /* Adjust logo size */
+    height: 140px;
+  }
+
+  .school-name {
+    font-size: 24px; /* Reduce text size */
+  }
+
+  .school-years {
+    font-size: 18px;
+  }
+
+  .awards p {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-title {
+    font-size: 50px;
+  }
+
+  .sub-title {
+    font-size: 20px;
+  }
+
+  .education-container {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .education-card {
+    width: 250px;
+    height: 380px;
+  }
+
+  .school-logo {
+    width: 120px;
+    height: 120px;
+  }
+
+  .school-name {
+    font-size: 20px;
+  }
+
+  .school-years {
+    font-size: 16px;
+  }
+
+  .awards p {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 360px) {
+  .main-title {
+    font-size: 40px;
+  }
+
+  .sub-title {
+    font-size: 18px;
+  }
+
+  .education-container {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .education-card {
+    width: 220px;
+    height: 340px;
+  }
+
+  .school-logo {
+    width: 100px;
+    height: 100px;
+  }
+
+  .school-name {
+    font-size: 18px;
+  }
+
+  .school-years {
+    font-size: 14px;
+  }
+
+  .awards p {
+    font-size: 16px;
+  }
+}
 
 </style>

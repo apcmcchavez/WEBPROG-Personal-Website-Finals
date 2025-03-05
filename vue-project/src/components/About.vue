@@ -315,6 +315,72 @@ onMounted(() => {
   }
 }
 
+@media (max-width: 780px) {
+  .content {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 85%;
+  }
+
+  .profile-image {
+    width: 35%;
+    height: auto;
+    position: relative;
+    left: auto;
+    margin-bottom: 0px;
+  }
+
+  .text-section {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  .halo {
+    font-size: clamp(40px, 7vw, 50px);
+    margin-top: 10px;
+  }
+
+  .subtitle {
+    font-size: clamp(30px, 6vw, 40px);
+  }
+
+  .text-container {
+    width: 100%;
+    max-width: 700px;
+    padding: 20px;
+    text-align: justify;
+  }
+
+  .description {
+    font-size: clamp(16px, 2.5vw, 22px);
+    line-height: 1.6;
+  }
+
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+  }
+
+  .icon-container {
+    width: clamp(45px, 8vw, 50px);
+    height: clamp(45px, 8vw, 50px);
+    margin-bottom: 25px;
+  }
+
+  .icon {
+    width: 85%;
+    height: 85%;
+  }
+}
+
 
 @media (max-width: 480px) {
   .profile-image {
