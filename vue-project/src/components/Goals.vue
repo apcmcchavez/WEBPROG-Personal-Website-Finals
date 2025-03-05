@@ -131,7 +131,27 @@ p {
 
 @media (max-width: 480px) {
   .heart-container {
-    width: 70vw;
+    width: 80vw;
+  }
+
+  .text-content {
+    width: 75%;
+  }
+
+  h1 {
+    font-size: clamp(30px, 5vw, 35px);
+  }
+
+  p {
+    font-size: clamp(12px, 3vw, 18px);
+    max-width: 65%;
+    margin-left: 55px;
+    margin-right: 25px;
+  }
+
+@media (max-width: 360px) {
+  .heart-container {
+    width: 80vw;
   }
 
   .text-content {
@@ -148,5 +168,6 @@ p {
     margin-left: auto;
     margin-right: auto;
   }
+}
 }
 </style>

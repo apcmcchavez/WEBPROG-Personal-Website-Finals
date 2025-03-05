@@ -198,6 +198,7 @@ onMounted(() => {
   font-size: 28px;
   color: black;
   margin-top: -4px;
+  margin-bottom: -4px;
   line-height: 35px;
 }
 
@@ -314,6 +315,7 @@ onMounted(() => {
   }
 }
 
+
 @media (max-width: 480px) {
   .profile-image {
     width: 80%;
@@ -329,8 +331,8 @@ onMounted(() => {
   }
 
   .description {
-    font-size: clamp(15px, 5vw, 15px);
-    line-height: clamp(15px, 6vw, 25px);
+    font-size: clamp(13px, 5vw, 13px);
+    line-height: clamp(12px, 6vw, 12px);
   }
 
   .text-container {
@@ -340,6 +342,40 @@ onMounted(() => {
   .icon-container {
     width: clamp(40px, 12vw, 40px);
     height: clamp(40px, 12vw, 40px);
+  }
+
+  .icon {
+    width: 75%;
+    height: 75%;
+  }
+}
+
+@media (max-width: 360px) {
+  .profile-image {
+    width: 80%;
+    margin-bottom: 10px;
+  }
+
+  .halo {
+    font-size: clamp(24px, 10vw, 40px);
+  }
+
+  .subtitle {
+    font-size: clamp(20px, 8vw, 35px);
+  }
+
+  .description {
+    font-size: clamp(12px, 5vw, 12px);
+    line-height: clamp(12px, 6vw, 12px);
+  }
+
+  .text-container {
+    padding: 10px;
+  }
+
+  .icon-container {
+    width: clamp(25px, 12vw, 25px);
+    height: clamp(25px, 12vw, 25px);
   }
 
   .icon {
