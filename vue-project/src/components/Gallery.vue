@@ -206,4 +206,14 @@ button {
 #feedback-form {
     margin-top: 50px;
 }
+
+@media screen and (max-width: 780px) {
+    .question-section {
+    text-align: center;
+    margin: 10px;
+    color: #6B2855;
+    font-size: 60px;
+    }
+}
+
 </style>

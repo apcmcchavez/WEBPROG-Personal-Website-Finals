@@ -4,11 +4,24 @@
     <div class="text-container">
       <h1>Hobbies and Interests</h1>
       <p>My hobbies and interests, such as gaming, art, and binge-watching, are shared here.</p>
+      
+      <!-- Hobby Buttons for Mobile View -->
+      <div class="hobby-buttons-mobile">
+        <button 
+          v-for="(hobby, index) in hobbies" 
+          :key="index" 
+          @click="togglePanel(hobby.name)"
+          :class="{ active: activeHobby === hobby.name }"
+        >
+          <span>{{ hobby.label }}</span>
+          <img :src="hobby.icon" alt="Hobby Icon" />
+        </button>
+      </div>
     </div>
 
     <div class="content">
-      <!-- Hobby Buttons -->
-      <div class="hobby-buttons">
+      <!-- Hobby Buttons for Desktop View -->
+      <div class="hobby-buttons-desktop">
         <button 
           v-for="(hobby, index) in hobbies" 
           :key="index" 
@@ -31,7 +44,7 @@
             alt="Left Arrow"
           />
           
-          <!-- Show three images dynamically -->
+          <!-- Show images dynamically based on screen size -->
           <div class="image-container">
             <img 
               v-for="(image, index) in displayedImages" 
@@ -51,7 +64,6 @@
           />
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -62,6 +74,7 @@ export default {
     return {
       activeHobby: null,
       currentImage: 0,
+      screenWidth: window.innerWidth,
       hobbies: [
         { name: "games", label: "GAMES", icon: "/icons/games.png" },
         { name: "arts", label: "ARTS N' CRAFTS", icon: "/icons/arts.png" },
@@ -93,6 +106,12 @@ export default {
       }
     };
   },
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  },
   computed: {
     hobbyImages() {
       return this.activeHobby ? this.images[this.activeHobby] || [] : [];
@@ -101,7 +120,16 @@ export default {
       if (!this.hobbyImages.length) return [];
 
       let startIndex = this.currentImage;
-      let endIndex = (startIndex + 3) % this.hobbyImages.length;
+      let imagesToShow = 3; // Default for large screens
+
+      // Adjust number of images based on screen width
+      if (this.screenWidth <= 480) {
+        imagesToShow = 1;
+      } else if (this.screenWidth <= 780) {
+        imagesToShow = 2;
+      }
+
+      let endIndex = (startIndex + imagesToShow) % this.hobbyImages.length;
 
       if (endIndex > startIndex) {
         return this.hobbyImages.slice(startIndex, endIndex);
@@ -113,49 +141,57 @@ export default {
       }
     },
     showArrows() {
-      return this.hobbyImages.length > 3;
+      return this.hobbyImages.length > (this.screenWidth <= 780 ? 2 : 3);
     }
   },
   methods: {
-  togglePanel(hobby) {
-    this.currentImage = 0; // Reset image index when switching
-    this.activeHobby = this.activeHobby === hobby ? null : hobby;
-  },
-  prevImage() {
-    const imageElements = document.querySelectorAll(".hobby-image");
-    
-    imageElements.forEach(img => {
-      img.classList.add("fade-right"); // All images fade & move right
-    });
-
-    setTimeout(() => {
-      this.currentImage = this.currentImage === 0 ? this.hobbyImages.length - 1 : this.currentImage - 1;
+    handleResize() {
+      this.screenWidth = window.innerWidth;
       
-      setTimeout(() => {
-        imageElements.forEach(img => {
-          img.classList.remove("fade-right"); // Remove effect after change
-        });
-      }, 50);
-    }, 300);
+      // Reset current image when screen size changes to avoid potential out-of-bounds issues
+      if (this.activeHobby) {
+        this.currentImage = 0;
+      }
+    },
+    togglePanel(hobby) {
+    this.currentImage = 0; // Reset image index when switching
+    this.activeHobby = this.activeHobby === hobby ? null : hobby; // Toggle state
   },
-  nextImage() {
-    const imageElements = document.querySelectorAll(".hobby-image");
-
-    imageElements.forEach(img => {
-      img.classList.add("fade-left"); // All images fade & move left
-    });
-
-    setTimeout(() => {
-      this.currentImage = this.currentImage === this.hobbyImages.length - 1 ? 0 : this.currentImage + 1;
+    prevImage() {
+      const imageElements = document.querySelectorAll(".hobby-image");
+      
+      imageElements.forEach(img => {
+        img.classList.add("fade-right");
+      });
 
       setTimeout(() => {
-        imageElements.forEach(img => {
-          img.classList.remove("fade-left"); // Remove effect after change
-        });
-      }, 50);
-    }, 300);
+        this.currentImage = this.currentImage === 0 ? this.hobbyImages.length - 1 : this.currentImage - 1;
+        
+        setTimeout(() => {
+          imageElements.forEach(img => {
+            img.classList.remove("fade-right");
+          });
+        }, 50);
+      }, 300);
+    },
+    nextImage() {
+      const imageElements = document.querySelectorAll(".hobby-image");
+
+      imageElements.forEach(img => {
+        img.classList.add("fade-left");
+      });
+
+      setTimeout(() => {
+        this.currentImage = this.currentImage === this.hobbyImages.length - 1 ? 0 : this.currentImage + 1;
+
+        setTimeout(() => {
+          imageElements.forEach(img => {
+            img.classList.remove("fade-left");
+          });
+        }, 50);
+      }, 300);
+    }
   }
-}
 };
 </script>
 
@@ -164,7 +200,7 @@ export default {
   background: url("/images/stars.png") no-repeat center center fixed;
   background-size: cover;
   padding: 50px;
-  position: relative; /* Keeps panel inside the section */
+  position: relative;
 }
 
 /* Title & Subtitle */
@@ -172,14 +208,13 @@ export default {
   color: #340B3C;
   font-size: 75px;
   font-weight: bold;
-  padding-top: 0px;
-  margin-top: 0px;
-  margin-bottom: 0px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 .text-container p {
   color: #6B2855;
   font-size: 45px;
-  margin-top: 0px;
+  margin-top: 0;
   margin-bottom: 45px;
 }
 
@@ -187,19 +222,25 @@ export default {
 .content {
   display: flex;
   align-items: flex-start;
-  position: relative; /* Keeps the right panel inside */
+  position: relative;
 }
 
-/* Hobby Buttons */
-.hobby-buttons {
+/* Desktop Hobby Buttons */
+.hobby-buttons-desktop {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  margin-right: 50px;
 }
 
-/* Hobby Buttons */
-/* Hobby Buttons */
-.hobby-buttons button {
+/* Mobile Hobby Buttons */
+.hobby-buttons-mobile {
+  display: none;
+}
+
+/* Hobby Buttons Shared Styles */
+.hobby-buttons-desktop button,
+.hobby-buttons-mobile button {
   width: 617px;
   height: 201px;
   background-color: #FFFFFF;
@@ -208,33 +249,34 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: 20px;
-  border: none;
+  border: #ffffff;
   cursor: pointer;
   transition: border 0.3s ease-in-out, background 0.3s ease-in-out;
   text-align: left;
   padding-left: 40px;
-  border: #ffffff;
 }
 
-/* Button outline appears on hover */
-.hobby-buttons button:hover {
+.hobby-buttons-desktop button:hover,
+.hobby-buttons-mobile button:hover {
   border: 12px solid #6B2855;
   background-color: #ffffff; 
 }
 
-/* Outline remains when active */
-.hobby-buttons button.active {
-  border: 12px solid #6B2855;
+.hobby-buttons-desktop button.active,
+.hobby-buttons-mobile button.active {
+  border: 12px solid #ffffff;
 }
 
-.hobby-buttons span {
+.hobby-buttons-desktop span,
+.hobby-buttons-mobile span {
   color: #6B2855;
   font-family: 'Jersey 10', serif;
   font-size: 125px;
   line-height: 80px;
 }
 
-.hobby-buttons img {
+.hobby-buttons-desktop img,
+.hobby-buttons-mobile img {
   width: 130px;
   height: 130px;
 }
@@ -242,12 +284,11 @@ export default {
 /* Right Panel */
 .right-panel {
   position: absolute;
-  bottom: 0;
   right: 0;
-  left: 750px;
-  top: 50px;
+  left: 700px;
+  top: 90px; 
   background-color: black;
-  width: 1305px;
+  width: 1142px;
   height: 65vh;
   border-left: 12px solid white;
   border-top: 12px solid white;
@@ -255,14 +296,14 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden; /* This prevents scrolling */
-  white-space: nowrap; /* Keeps images in a single row */
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .right-panel img {
-  height: 45vh; /* Adjust so images fit */
+  height: 45vh;
   object-fit: contain;
-  display: inline-block; /* Ensures images stay in a row */
+  display: inline-block;
   padding-top: 0;
 }
 
@@ -289,13 +330,13 @@ export default {
 }
 
 .hobby-image.fade-left {
-  transform: translateX(-50px); /* Slight left shift */
-  opacity: 0.3; /* Fades slightly */
+  transform: translateX(-50px);
+  opacity: 0.3;
 }
 
 .hobby-image.fade-right {
-  transform: translateX(50px); /* Slight right shift */
-  opacity: 0.3; /* Fades slightly */
+  transform: translateX(50px);
+  opacity: 0.3;
 }
 
 .hobby-image:hover {
@@ -307,20 +348,365 @@ export default {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 50px; /* Adjust size */
+  width: 50px;
   height: 50px;
   cursor: pointer;
-  z-index: 10; /* Ensure they stay above images */
+  z-index: 10;
 }
 
 .left-arrow {
-  left: -75px;
+  left: -50px;
 }
 
 .right-arrow {
-  right: -75px;
+  right: -50px;
 }
 
+
+@media screen and (max-width: 780px) {
+  .content {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .text-container h1 {
+    color: #340B3C;
+    font-size: 60px;
+    font-weight: bold;
+    padding-top: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
+  .text-container p {
+    color: #6B2855;
+    font-size: 24px;
+    margin-top: 0px;
+    margin-bottom: 35px;
+  }
+
+  .right-panel {
+    position: relative;
+    right: auto;
+    left: auto;
+    width: 95%;
+    height: 55vh;
+    top: 75px;
+    max-width: 700px;
+    margin: 0 auto;
+    border-top-right-radius: 50px;
+    border-right: 12px solid white;
+  }
+  
+  .right-panel img {
+    height: 40vh; /* Adjust so images fit */
+    object-fit: contain;
+    display: inline-block; /* Ensures images stay in a row */
+    padding-top: 0;
+  }
+
+  /* Hide desktop buttons */
+  .hobby-buttons-desktop {
+    display: none;
+    margin-right: 0;
+  }
+
+  /* Mobile Hobby Buttons */
+  .hobby-buttons-mobile {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    border: none; /* Ensure no unwanted border */
+  }
+
+  .hobby-buttons-mobile button {
+    width: auto;
+    height: 100px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #ffffff;
+    transition: border 0.3s ease-in-out;
+  }
+
+  /* Add outline on hover */
+  .hobby-buttons-mobile button:hover {
+    border: 6px solid #6B2855;
+  }
+
+  /* Active button (with border) */
+  .hobby-buttons-mobile button.active {
+    border: 6px solid #6B2855;
+  }
+
+  /* Remove border when clicked again (inactive state) */
+  .hobby-buttons-mobile button:not(.active) {
+    border: none;
+  }
+
+  .hobby-buttons-mobile span {
+    font-size: 30px;
+    line-height: normal;
+  }
+
+  .hobby-buttons-mobile img {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+
+@media screen and (max-width: 480px) {
+  .content {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .text-container h1 {
+    color: #340B3C;
+    font-size: 50px;
+    font-weight: bold;
+    padding-top: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
+  .text-container p {
+    color: #6B2855;
+    font-size: 22px;
+    margin-top: 0px;
+    margin-bottom: 25px;
+  }
+
+  /* Right Panel Adjustments */
+  .right-panel {
+    position: relative;
+    right: auto;
+    left: auto;
+    width: 90%;
+    height: 45vh;
+    top: 70px;
+    max-width: 400px;
+    margin: 0 auto;
+    border-top-right-radius: 50px;
+    border-right: 12px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .right-panel .carousel {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .right-panel img.hobby-image {
+    height: 50vh; /* Adjust image size */
+    object-fit: contain;
+    display: block;
+    margin: auto; /* Center the image */
+    transition: transform 0.3s ease-in-out;
+  }
+
+  /* Smaller Arrow Buttons */
+  .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 35px; /* Smaller size */
+    height: 35px;
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  .left-arrow {
+    left: 15px;
+  }
+
+  .right-arrow {
+    right: 15px;
+  }
+
+  /* Hide desktop buttons */
+  .hobby-buttons-desktop {
+    display: none;
+    margin-right: 0;
+  }
+
+  /* Mobile Hobby Buttons (Stacked) */
+  .hobby-buttons-mobile {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    border: none;
+  }
+
+  .hobby-buttons-mobile button {
+    width: 90%;
+    height: 90px;
+    padding: 10px 15px;
+    border: none;
+    background-color: #ffffff;
+    transition: border 0.3s ease-in-out;
+  }
+
+  /* Add outline on hover */
+  .hobby-buttons-mobile button:hover {
+    border: 8px solid #6B2855;
+  }
+
+  /* Active button (with border) */
+  .hobby-buttons-mobile button.active {
+    border: 8px solid #6B2855;
+  }
+
+  /* Remove border when clicked again */
+  .hobby-buttons-mobile button:not(.active) {
+    border: none;
+  }
+
+  .hobby-buttons-mobile span {
+    font-size: 35px;
+    line-height: normal;
+  }
+
+  .hobby-buttons-mobile img {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .content {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .text-container h1 {
+    color: #340B3C;
+    font-size: 40px; /* Slightly smaller */
+    font-weight: bold;
+    padding-top: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    text-align: center;
+  }
+
+  .text-container p {
+    color: #6B2855;
+    font-size: 18px; /* Smaller text */
+    margin-top: 0px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  /* Right Panel Adjustments */
+  .right-panel {
+    position: relative;
+    right: auto;
+    left: auto;
+    width: 95%; /* Slightly smaller */
+    height: 40vh; /* Adjusted height */
+    top: 75px;
+    max-width: 320px; /* Smaller max-width */
+    margin: 0 auto;
+    border-top-right-radius: 40px; /* Softer radius */
+    border-right: 10px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .right-panel .carousel {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .right-panel img.hobby-image {
+    height: 40vh; /* Adjust image size */
+    object-fit: contain;
+    display: block;
+    margin: auto; /* Center the image */
+    transition: transform 0.3s ease-in-out;
+  }
+
+  /* Smaller Arrow Buttons */
+  .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 25px; /* Even smaller size */
+    height: 25px;
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  .left-arrow {
+    left: 10px;
+  }
+
+  .right-arrow {
+    right: 10px;
+  }
+
+  /* Hide desktop buttons */
+  .hobby-buttons-desktop {
+    display: none;
+    margin-right: 0;
+  }
+
+  /* Mobile Hobby Buttons (Stacked) */
+  .hobby-buttons-mobile {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center;
+    gap: 10px; /* Smaller gap */
+    margin-bottom: 10px;
+    border: none;
+  }
+
+  .hobby-buttons-mobile button {
+    width: 95%;
+    height: 80px; /* Smaller height */
+    padding: 8px 12px;
+    border: none;
+    background-color: #ffffff;
+    transition: border 0.3s ease-in-out;
+  }
+
+  /* Add outline on hover */
+  .hobby-buttons-mobile button:hover {
+    border: 6px solid #6B2855;
+  }
+
+  /* Active button (with border) */
+  .hobby-buttons-mobile button.active {
+    border: 6px solid #6B2855;
+  }
+
+  /* Remove border when clicked again */
+  .hobby-buttons-mobile button:not(.active) {
+    border: none;
+  }
+
+  .hobby-buttons-mobile span {
+    font-size: 28px;
+    line-height: normal;
+  }
+
+  .hobby-buttons-mobile img {
+    width: 55px;
+    height: 55px;
+  }
+}
 
 
 </style>

@@ -23,5 +23,13 @@
     color: #FFFFFF !important;
     font-size: 1.2rem;
   }
+
+  @media screen and (max-width: 360px) {
+    .footer-text {
+    margin: 0;
+    color: #FFFFFF !important;
+    font-size: 1rem;
+  }
+  }
   </style>
   

@@ -1,10 +1,17 @@
 <template>
-  <nav class="bg-purple-900 text-white p-4 flex justify-between items-center">
-    <h1 class="text-xl font-bold pixel-font">lyah</h1>
-    <div class="flex space-x-3">
-      <div v-for="item in navItems" :key="item.name" class="folder">
-        <span class="text-xs">{{ item.name }}</span>
-      </div>
+  <nav class="bg-purple-900 text-white p-4 flex items-center justify-between">
+    <!-- Clickable Iyah Title -->
+    <h1 class="iyah-text" @click="toggleResources">Iyah</h1>
+
+    <!-- Folder icons container -->
+    <div class="folders-container">
+      <img 
+        v-for="item in navItems" 
+        :key="item.sectionId" 
+        :src="item.image" 
+        class="folder-img"
+        @click="scrollTo(item.sectionId)"
+      />
     </div>
   </nav>
 </template>
@@ -14,40 +21,70 @@ export default {
   data() {
     return {
       navItems: [
-        { name: "ME" },
-        { name: "EDUC" },
-        { name: "SKILLS" },
-        { name: "LIKES" }
+        { image: "/images/nav-bar/me-icon.png", sectionId: "about-section" },
+        { image: "/images/nav-bar/educ-icon.png", sectionId: "educ-section" },
+        { image: "/images/nav-bar/skills-icon.png", sectionId: "course-section" },
+        { image: "/images/nav-bar/likes-icon.png", sectionId: "hobbies-section" },
+        { image: "/images/nav-bar/peeps-icon.png", sectionId: "goals-section" }
       ]
     };
+  },
+  methods: {
+    toggleResources() {
+      this.$emit("toggle-resources");
+    },
+    scrollTo(sectionId) {
+      this.$emit("scroll-to-section", sectionId);
+    }
   }
 };
 </script>
 
 <style scoped>
-.pixel-font {
-  font-family: "Press Start 2P", sans-serif; /* Use a pixel-style font */
-}
+@import url('https://fonts.cdnfonts.com/css/jersey-10');
 
-.folder {
-  background-color: #6a3d89;
-  padding: 6px 12px;
-  border-radius: 3px;
-  font-weight: bold;
+nav {
+  background-color: #3b0f49;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   position: relative;
-  text-align: center;
-  color: white;
-  min-width: 50px;
+  z-index: 100;
 }
 
-.folder::before {
-  content: "";
-  position: absolute;
-  top: -4px;
-  left: 4px;
-  width: 12px;
-  height: 6px;
-  background-color: #7e52a0;
-  border-radius: 2px 2px 0 0;
+.iyah-text {
+  font-family: 'Jersey 10', serif;
+  font-size: 90px;
+  white-space: nowrap;
+  margin-left: 150px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-weight: normal;
+  color: white;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.iyah-text:hover {
+  color: #c3a6e6; /* Lighter purple on hover */
+}
+
+.folders-container {
+  display: flex;
+  gap: 30px;
+  margin-right: 80px;
+}
+
+.folder-img {
+  width: 144px;
+  height: 108px;
+  object-fit: contain;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.folder-img:hover {
+  transform: scale(1.1);
 }
 </style>
