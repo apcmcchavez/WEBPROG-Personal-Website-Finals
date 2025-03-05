@@ -166,20 +166,28 @@ onMounted(() => {
 
 .typing {
   color: #9D427F;
+  text-shadow: 0 0 5px #F48FD3, 0 0
+
 }
 
-/* Blinking Cursor */
+/* Blinking and Glowing Cursor */
 .cursor {
   color: #9D427F;
   display: inline-block;
   width: 10px;
-  animation: blink 0.7s infinite;
+  animation: blink 0.7s infinite, glow 1.5s infinite alternate;
 }
 
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
+
+@keyframes glow {
+  0% { text-shadow: 0 0 5px #F48FD3, 0 0 10px #F48FD3; }
+  100% { text-shadow: 0 0 10px #F48FD3, 0 0 20px #F48FD3; }
+}
+
 
 /* Text Container */
 .text-container {

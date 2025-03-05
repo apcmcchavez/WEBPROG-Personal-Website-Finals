@@ -31,6 +31,12 @@
       <FeedbackForm />
     </section>
     
+    <!-- Footer Section -->
+    <section id="footer-section">
+      <Footer />
+    </section>
+
+    
   </div>
 </template>
 
@@ -38,9 +44,12 @@
 import About from './components/About.vue';
 import Educ from './components/Educ.vue';
 import Course from './components/Course.vue';
+
 import Goals from './components/Goals.vue';
-import FeedbackForm from './components/FeedbackForm.vue';
 import Gallery from './components/Gallery.vue';
+import FeedbackForm from './components/FeedbackForm.vue';
+import Footer from './components/Footer.vue';
+
 
 const scrollToFeedback = () => {
   const feedbackSection = document.querySelector("#feedback-section");
@@ -65,6 +74,10 @@ html, body {
   height: 100%;
   background-color: black;
   overflow-x: hidden; /* Prevents horizontal scrolling */
+}
+
+#__next-build-watcher, #vercel-badge {
+  display: none !important;
 }
 
 </style>
