@@ -78,14 +78,98 @@
 
 /* 🔹 Style the Link */
 .resources-list li a {
-  color: #BD94F9; /* Light purple */
+  color: #BD94F9;
   text-decoration: none;
   transition: color 0.2s;
 }
 
 .resources-list li a:hover {
-  color: #BD94F9; /* Lighter purple on hover */
+  color: #BD94F9;
   text-decoration: underline;
-  text-underline-offset: 3px; 
+  text-underline-offset: 3px;
+}
+
+/* Responsive styling */
+
+/* For screens 780px and below */
+@media (max-width: 780px) {
+  .resources-container {
+    padding: 30px;
+    padding-top: 60px;
+  }
+  .back-button {
+
+    font-size: 36px;
+    top: 120px;
+    left: 20px;
+  }
+  .resources-content {
+    margin-top: 100px;
+    margin-left: 30px;
+  }
+  .resources-title {
+    font-size: 60px;
+  }
+  .resources-list {
+    font-size: 24px;
+  }
+  .resources-list li {
+    margin-bottom: 8px;
+    margin-left: 20px;
+  }
+}
+
+/* For screens 480px and below */
+@media (max-width: 480px) {
+  .resources-container {
+    padding: 20px;
+    padding-top: 40px;
+  }
+  .back-button {
+    font-size: 30px;
+    top: 100px;
+    left: 15px;
+  }
+  .resources-content {
+    margin-top: 80px;
+    margin-left: 20px;
+  }
+  .resources-title {
+    font-size: 45px;
+  }
+  .resources-list {
+    font-size: 20px;
+  }
+  .resources-list li {
+    margin-bottom: 6px;
+    margin-left: 15px;
+  }
+}
+
+/* For screens 360px and below */
+@media (max-width: 360px) {
+  .resources-container {
+    padding: 15px;
+    padding-top: 30px;
+  }
+  .back-button {
+    font-size: 24px;
+    top: 90px;
+    left: 10px;
+  }
+  .resources-content {
+    margin-top: 70px;
+    margin-left: 10px;
+  }
+  .resources-title {
+    font-size: 35px;
+  }
+  .resources-list {
+    font-size: 18px;
+  }
+  .resources-list li {
+    margin-bottom: 4px;
+    margin-left: 10px;
+  }
 }
 </style>

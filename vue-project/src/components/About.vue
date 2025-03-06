@@ -248,80 +248,6 @@ onMounted(() => {
 }
 
 /* RESPONSIVE STYLES */
-@media (max-width: 768px) {
-  .content {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    min-height: 100vh;
-    max-width: 755px;
-  }
-
-  .profile-image {
-    width: 60%;
-    height: auto;
-    position: relative;
-    left: auto;
-    margin-top: 35px;
-  }
-
-  .text-section {
-    position: relative;
-    left: auto;
-    bottom: auto;
-    align-items: center;
-    text-align: center;
-    width: 90%;
-  }
-
-  .halo {
-    font-size: clamp(20px, 8vw, 40px);
-  }
-
-  .subtitle {
-    font-size: clamp(24px, 6vw, 30px);
-  }
-
-  /* Prevents text from exceeding the box */
-.description {
-  max-width: 100%;
-  overflow-wrap: break-word;
-  font-size: clamp(14px, 2vw, 20px);
-  line-height: 1.5;
-}
-
-  .text-container {
-  width: 100%; /* Adjust width as needed */
-  max-width: 1500px; /* Ensures it doesn't stretch too wide */
-  padding-top: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-bottom: 0px;
-  background: rgba(217, 217, 217, 0.65);
-  border-radius: 9px;
-  overflow: hidden;
-  word-wrap: break-word;
-  text-align: justify;
-}
-
-  .social-icons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 15px;
-  }
-
-  .icon-container {
-    width: clamp(40px, 10vw, 45px);
-    height: clamp(40px, 10vw, 45px);
-  }
-
-  .icon {
-    width: 80%;
-    height: 80%;
-  }
-}
 
 @media (max-width: 780px) {
   .content {
@@ -338,6 +264,7 @@ onMounted(() => {
     position: relative;
     left: auto;
     margin-bottom: 0px;
+    margin-top: 50px;
   }
 
   .text-section {
@@ -366,7 +293,7 @@ onMounted(() => {
   }
 
   .description {
-    font-size: clamp(16px, 2.5vw, 22px);
+    font-size: clamp(12px, 2.5vw, 17px);
     line-height: 1.6;
   }
 
@@ -392,7 +319,7 @@ onMounted(() => {
 
 @media (max-width: 480px) {
   .profile-image {
-    width: 80%;
+    width: 65%;
     margin-bottom: 10px;
   }
 
@@ -439,8 +366,8 @@ onMounted(() => {
   }
 
   .description {
-    font-size: clamp(12px, 5vw, 12px);
-    line-height: clamp(12px, 6vw, 12px);
+    font-size: clamp(14px, 5vw, 14px);
+    line-height: clamp(14px, 6vw, 14px);
   }
 
   .text-container {
@@ -448,13 +375,13 @@ onMounted(() => {
   }
 
   .icon-container {
-    width: clamp(25px, 12vw, 25px);
-    height: clamp(25px, 12vw, 25px);
+    width: clamp(35px, 12vw, 35px);
+    height: clamp(35px, 12vw, 35px);
   }
 
   .icon {
-    width: 75%;
-    height: 75%;
+    width: 90%;
+    height: 90%;
   }
 }
 
