@@ -51,7 +51,6 @@ const scrollToSection = (sectionId) => {
   }
 };
 
-// Ensure scrolling is reset if needed
 onMounted(() => {
   document.documentElement.style.overflow = "auto";
 });
@@ -60,7 +59,6 @@ onMounted(() => {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&family=Jersey+10&display=swap');
 
-/* Universal box-sizing and max-width */
 *,
 *::before,
 *::after {
@@ -72,17 +70,15 @@ h1, h2, h3, p {
   font-family: 'Jersey 10', serif;
 }
 
-/* Prevent horizontal overflow by using viewport width */
 html, body {
   margin: 0;
   padding: 0;
-  width: 100vw; /* Use the viewport width to prevent extra space */
+  width: 100vw;
   height: 100vh;
-  overflow-x: hidden; /* Hide horizontal scroll */
+  overflow-x: hidden;
   background-color: black;
 }
 
-/* Navbar: Fixed at the top */
 #navbar-section {
   position: fixed;
   top: 0;
@@ -92,34 +88,27 @@ html, body {
   z-index: 300;
 }
 
-/* Main Content: Scrollable vertically */
 #main-content {
   margin-top: 80px; /* Adjust based on navbar height */
-  width: 100%;  /* Ensure full width */
+  width: 100%;
   height: calc(100vh - 80px);
-  overflow-y: auto; /* Enable vertical scrolling */
-  overflow-x: hidden; /* Prevent horizontal scrolling */
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
-/* Custom vertical scrollbar styling for #main-content (Webkit browsers) */
+/* Scroll styling copied from the education component */
+/* Hide scrollbar for Webkit Browsers */
 #main-content::-webkit-scrollbar {
-  width: 8px;
+  width: 0; /* Completely hides the vertical scrollbar */
+  /* For horizontal scrollbar (if needed) you could add: height: 5px; */
 }
-
+#main-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
 #main-content::-webkit-scrollbar-track {
   background: transparent;
-}
-
-#main-content::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
-  border: 1px solid transparent;
-}
-
-/* Firefox scrollbar styling for #main-content */
-#main-content {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
 
 /* Prevent scrolling when Resources.vue is open */
@@ -127,7 +116,6 @@ html, body {
   overflow: hidden;
 }
 
-/* Resources Section Styling */
 #resources-section {
   position: fixed;
   top: 0;
@@ -142,5 +130,3 @@ html, body {
   z-index: 200;
 }
 </style>
-
-

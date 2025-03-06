@@ -285,7 +285,7 @@ export default {
 .right-panel {
   position: absolute;
   right: 0;
-  left: 700px;
+  left: 732px;
   top: 90px; 
   background-color: black;
   width: 1142px;

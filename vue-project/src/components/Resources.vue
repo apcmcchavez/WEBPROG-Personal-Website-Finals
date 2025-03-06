@@ -60,7 +60,7 @@
 .resources-title {
   font-size: 75px;
   font-weight: bold;
-  color: #bfa2db;
+  color: #6B2855;
   margin-bottom: 20px;
 }
 
@@ -78,7 +78,7 @@
 
 /* 🔹 Style the Link */
 .resources-list li a {
-  color: #BD94F9;
+  color: #A66DAC;
   text-decoration: none;
   transition: color 0.2s;
 }

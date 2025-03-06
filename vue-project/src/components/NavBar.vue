@@ -55,6 +55,7 @@ nav {
   overflow-x: hidden;
   box-sizing: border-box;
   z-index: 400;
+  margin: 0px;
 }
 
 
