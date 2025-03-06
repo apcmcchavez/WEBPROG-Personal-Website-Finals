@@ -1,6 +1,6 @@
 <template>
   <div class="education-page">
-     <!-- Fade Overlay -->
+    <!-- Fade Overlay -->
     <div class="fade-overlay"></div>
     <!-- Background Image -->
     <div class="background"></div>
@@ -12,7 +12,7 @@
     </div>
 
     <!-- Education Cards Carousel -->
-    <div ref="carousel" class="education-container">
+    <div ref="educationContainer" class="education-container">
       <div class="education-scroll">
         <div
           v-for="(school, index) in schools"
@@ -109,6 +109,14 @@ export default {
       ],
     };
   },
+  mounted() {
+    this.$nextTick(() => {
+      if (this.$refs.educationContainer) {
+        // Force scroll position to the first card on load
+        this.$refs.educationContainer.scrollLeft = 0;
+      }
+    });
+  },
 };
 </script>
 
@@ -117,32 +125,29 @@ export default {
 .education-page {
   width: 100%;
   height: 750px; /* Adjusted height */
-  background-image: url('/public/images/stars.png'); /* Background image */
+  background-image: url('/images/stars.png'); /* Example background image */
   background-size: cover;
   background-position: center;
   display: flex;
   flex-direction: column;
   justify-content: flex-start; /* Keeps the header at the top */
   align-items: flex-start;
-  padding: 50px; /* Adds some space for text */
+  padding: 50px;
   box-sizing: border-box;
   overflow: hidden;
+  position: relative; /* For fade-overlay positioning */
 }
 
-/* Fade Overlay (specific to education section) */
-.education-page {
-  position: relative; /* Ensures the fade overlay is positioned inside */
-}
-
+/* Fade Overlay */
 .fade-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 15px; /* Adjust height as needed */
-  background: linear-gradient(to bottom, #340b3c85, rgba(52, 11, 60, 0)); /* Fades out */
-  pointer-events: none; /* Ensures it doesn’t block interactions */
-  z-index: 10; /* Keeps it above other content */
+  height: 85px; /* Adjust height as needed */
+  background: linear-gradient(to bottom, #402146, rgba(52, 11, 60, 0)); /* Fades out */
+  pointer-events: none;
+  z-index: 10;
 }
 
 /* Header Section */
@@ -156,24 +161,13 @@ export default {
   color: #340b3c;
   font-weight: bold;
   padding-top: 25px;
-  margin: 0px;
+  margin: 0;
 }
 
 .sub-title {
   font-size: 30px;
   color: #6B2855;
-  margin: 0px;
-}
-
-/* Fade Overlay */
-.fade-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 85px; /* Adjust height as needed */
-  background: linear-gradient(to bottom, #402146, rgba(52, 11, 60, 0)); /* Fades out */
-  pointer-events: none; /* Ensures it doesn't interfere with interactions */
+  margin: 0;
 }
 
 /* Education Cards Carousel */
@@ -181,11 +175,11 @@ export default {
   width: 100%;
   overflow-x: auto; /* Enables horizontal scrolling */
   overflow-y: hidden; /* Prevent vertical scrolling */
-  white-space: nowrap;
+  white-space: nowrap; /* Keep cards in a single row by default */
   padding: 10px;
   display: flex;
   align-items: center;
-  scroll-behavior: smooth; /* Enables smooth scrolling */
+  scroll-behavior: smooth; /* Smooth horizontal scroll */
 }
 
 /* Hide Scrollbar */
@@ -193,26 +187,24 @@ export default {
   width: 0; /* Completely hides scrollbar */
   height: 5px;
 }
-
 .education-container::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.3);
   border-radius: 10px;
 }
-
 .education-container::-webkit-scrollbar-track {
   background: transparent;
 }
 
-/* Scrollable Content */
+/* Inner Scrollable Content */
 .education-scroll {
   display: flex;
   gap: 20px;
   padding-bottom: 10px;
-  flex-wrap: nowrap;
+  flex-wrap: nowrap; /* Keep items in one row */
   width: max-content;
 }
 
-/* Hover Effect for Education Cards */
+/* Education Card */
 .education-card {
   width: 320px;
   height: 470px;
@@ -230,14 +222,12 @@ export default {
   backdrop-filter: blur(3px);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 .education-card:hover {
-  transform: scale(1.05); /* Makes the card bigger */
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3); /* Adds a subtle shadow */
+  transform: scale(1.05); /* Subtle grow on hover */
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
 }
 
-
-/* Overlay */
+/* Overlay on each card */
 .overlay {
   position: absolute;
   width: 100%;
@@ -264,7 +254,7 @@ export default {
   padding: 10px 15px;
 }
 
-/* Increased text size */
+/* Text */
 .school-name {
   font-size: 28px;
   font-weight: bold;
@@ -272,9 +262,8 @@ export default {
   word-wrap: break-word;
   white-space: pre-line;
   line-height: 1.2;
-  margin: 0px;
+  margin: 0;
 }
-
 .school-years {
   font-size: 22px;
   color: white;
@@ -287,12 +276,10 @@ export default {
   margin: 2px 0;
   font-size: 24px;
 }
-
 .year-level {
   color: #bd94f9;
   font-weight: bold;
 }
-
 .award-text {
   color: white;
 }
@@ -304,121 +291,97 @@ export default {
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
 }
 
-/* Make education cards adjust for smaller screens */
+/* Responsive Breakpoints */
+
+/* 
+   1) <= 780px: reduce container height & card size,
+      but keep horizontal scrolling so the first card remains leftmost
+*/
 @media (max-width: 780px) {
   .education-page {
-    padding: 30px; /* Reduce padding for smaller screens */
-    height: auto; /* Allow it to expand */
+    padding: 30px;
+    height: auto; /* Let the page grow in height */
   }
-
   .main-title {
-    font-size: 60px; /* Reduce font size */
+    font-size: 60px;
   }
-
   .sub-title {
-    font-size: 24px; /* Smaller subtitle */
+    font-size: 24px;
   }
-
-  .education-container {
-    flex-wrap: wrap; /* Allow cards to wrap instead of overflow */
-    justify-content: center; /* Center cards */
-  }
-
   .education-card {
-    width: 280px; /* Reduce card size */
+    width: 280px;
     height: 420px;
   }
-
   .school-logo {
-    width: 140px; /* Adjust logo size */
+    width: 140px;
     height: 140px;
   }
-
   .school-name {
-    font-size: 24px; /* Reduce text size */
+    font-size: 24px;
   }
-
   .school-years {
     font-size: 18px;
   }
-
   .awards p {
     font-size: 20px;
   }
 }
 
+/*
+   2) <= 480px: even smaller card size, still horizontal scrolling
+*/
 @media (max-width: 480px) {
   .main-title {
     font-size: 50px;
   }
-
   .sub-title {
     font-size: 20px;
   }
-
-  .education-container {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
   .education-card {
     width: 250px;
     height: 380px;
   }
-
   .school-logo {
     width: 120px;
     height: 120px;
   }
-
   .school-name {
     font-size: 20px;
   }
-
   .school-years {
     font-size: 16px;
   }
-
   .awards p {
     font-size: 18px;
   }
 }
 
+/*
+   3) <= 360px: smallest sizes
+*/
 @media (max-width: 360px) {
   .main-title {
     font-size: 40px;
   }
-
   .sub-title {
     font-size: 18px;
   }
-
-  .education-container {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
   .education-card {
     width: 220px;
     height: 340px;
   }
-
   .school-logo {
     width: 100px;
     height: 100px;
   }
-
   .school-name {
     font-size: 18px;
   }
-
   .school-years {
     font-size: 14px;
   }
-
   .awards p {
     font-size: 16px;
   }
 }
-
 </style>
