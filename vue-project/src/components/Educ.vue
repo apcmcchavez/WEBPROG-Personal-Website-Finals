@@ -207,7 +207,7 @@ export default {
 /* Education Card */
 .education-card {
   width: 320px;
-  height: 470px;
+  height: 450px;
   border-radius: 9px;
   position: relative;
   background-size: cover;

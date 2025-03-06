@@ -50,9 +50,13 @@ nav {
   align-items: center;
   justify-content: space-between;
   position: relative;
-  width: 100%;
+  width: 100vw;
+  max-width: 100vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
   z-index: 400;
 }
+
 
 .iyah-text {
   font-family: 'Jersey 10', serif;

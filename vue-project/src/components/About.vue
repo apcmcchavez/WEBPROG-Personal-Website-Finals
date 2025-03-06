@@ -195,7 +195,7 @@ onMounted(() => {
   padding: 30px;
   border-radius: 9px;
   max-width: 700px;
-  max-height: 270px;
+  max-height: 285px;
   text-align: left;
   box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.2);
 }
@@ -203,11 +203,11 @@ onMounted(() => {
 /* Description Text */
 .description {
   font-family: "Jersey 10", sans-serif;
-  font-size: 28px;
+  font-size: 25px;
   color: black;
   margin-top: -4px;
   margin-bottom: -4px;
-  line-height: 35px;
+  line-height: 30px;
 }
 
 /* Social Icons */
